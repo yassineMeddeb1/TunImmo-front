@@ -1,0 +1,210 @@
+<div class="ajouter-bien-container">
+  <div class="ajouter-bien-container">
+    <h4>{{ isEditMode ? 'Modifier un Bien Immobilier' : 'Ajouter un Bien Immobilier' }}</h4>
+    
+    <!-- Bouton de retour -->
+    <button *ngIf="isEditMode" class="btn btn-secondary mb-3" (click)="router.navigate(['/proprietaire/annonces'])">
+      <i class="bi bi-arrow-left"></i> Retour à la liste
+    </button>
+  <div class="ajouter-bien-form">
+    <!-- Section Type de Transaction -->
+    <div class="form-card">
+      <h3><i class="bi bi-arrow-left-right"></i> Type de Transaction</h3>
+      <div class="transaction-options">
+        <label class="transaction-option">
+          <input type="radio" [(ngModel)]="annonce.typeTransaction" name="typeTransaction" value="VENTE" required>
+          <div class="option-content">
+            <i class="bi bi-cash"></i>
+            <span>Vente</span>
+          </div>
+        </label>
+        <label class="transaction-option">
+          <input type="radio" [(ngModel)]="annonce.typeTransaction" name="typeTransaction" value="LOCATION" required>
+          <div class="option-content">
+            <i class="bi bi-house-door"></i>
+            <span>Location</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section Détails Location (visible seulement si typeTransaction = LOCATION) -->
+    <div class="form-card" *ngIf="annonce.typeTransaction === 'LOCATION'">
+      <h3><i class="bi bi-house-door"></i> Détails Location</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label><i class="bi bi-calendar"></i> Type de Location :</label>
+          <select [(ngModel)]="annonce.typeLocation" name="typeLocation" required>
+            <option value="MENSUELLE">Mensuelle</option>
+            <option value="ANNUELLE">Annuelle</option>
+            <option value="PAR_NUIT">Par nuit</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><i class="bi bi-check-circle"></i> Meublé :</label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="meuble" [(ngModel)]="annonce.meuble" name="meuble">
+            <label for="meuble" class="toggle-label"></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label><i class="bi bi-check-circle"></i> Charges incluses :</label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="chargesIncluses" [(ngModel)]="annonce.chargesIncluses" name="chargesIncluses">
+            <label for="chargesIncluses" class="toggle-label"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Catégorie du Bien -->
+    <div class="form-card">
+      <h3><i class="bi bi-grid"></i> Catégorie du Bien</h3>
+      <div class="category-options">
+        <label class="category-option" *ngFor="let category of Listcategories">
+          <input type="radio" [(ngModel)]="newCat" name="categorie" 
+                 [value]="category" (change)="onCategoryChange()" required>
+          <div class="option-content">
+            <i class="bi bi-house" *ngIf="category.id === 1"></i>
+            <i class="bi bi-building" *ngIf="category.id === 2"></i>
+            <i class="bi bi-tree" *ngIf="category.id === 3"></i>
+            <span>{{category.nom}}</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section Informations Générales -->
+    <div class="form-card">
+      <h3><i class="bi bi-info-circle"></i> Informations Générales</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label><i class="bi bi-card-heading"></i> Titre :</label>
+          <input type="text" [(ngModel)]="annonce.titre" name="titre" required>
+        </div>
+        <div class="form-group">
+          <label><i class="bi bi-text-paragraph"></i> Description :</label>
+          <textarea [(ngModel)]="annonce.description" name="description" rows="4" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label><i class="bi bi-geo-alt"></i> Gouvernorat :</label>
+          <select [(ngModel)]="selectedGouvernoratId" (change)="onGouvernoratChange()" name="gouvernorat" required>
+            <option *ngFor="let gov of gouvernorats" [value]="gov.id">{{ gov.nom }}</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label><i class="bi bi-building"></i> Commune :</label>
+          <select [(ngModel)]="selectedComId" name="commune" required>
+            <option *ngFor="let commune of communes" [value]="commune.id">
+              {{ commune.nom }}
+            </option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label><i class="bi bi-house-door"></i> Adresse :</label>
+          <input type="text" [(ngModel)]="annonce.adresse" name="adresse" required>
+        </div>
+        <div class="form-group">
+          <label><i class="bi bi-file-earmark-text"></i> Statut Juridique :</label>
+          <input type="text" [(ngModel)]="annonce.statutJuridique" name="statutJuridique" required>
+        </div>
+        
+        <div class="form-group">
+          <label><i class="bi bi-cash"></i> Prix :</label>
+          <input type="number" [(ngModel)]="annonce.prix" name="prix" required>
+        </div>
+        <div class="form-group">
+          <label><i class="bi bi-check-circle"></i> Disponible :</label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="disponible" [(ngModel)]="annonce.disponible" name="disponible">
+            <label for="disponible" class="toggle-label"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Détails du Bien (Conditionnelle) -->
+    <div class="form-card" *ngIf="newCat?.id !== 3">
+      <h3><i class="bi bi-house"></i> Détails du Bien</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label><i class="bi bi-rulers"></i> Surface (m²) :</label>
+          <input type="number" [(ngModel)]="annonce.surface" name="surface">
+        </div>
+        <div class="form-group">
+          <label><i class="bi bi-door-open"></i> Nombre de Chambres :</label>
+          <input type="number" [(ngModel)]="annonce.nombresChambres" name="nombresChambres">
+        </div>
+        <div class="form-group">
+          <label><i class="bi bi-grid"></i> Nombre de Pièces :</label>
+          <input type="number" [(ngModel)]="annonce.nombresPieces" name="nombresPieces">
+        </div>
+        <div class="form-group" *ngIf="newCat?.id === 2">
+          <label><i class="bi bi-layers"></i> Nombre d'Étages :</label>
+          <input type="number" [(ngModel)]="annonce.nombresEtages" name="nombresEtages">
+        </div>
+        <div class="form-group">
+          <label><i class="bi bi-droplet"></i> Nombre de Salles de Bain :</label>
+          <input type="number" [(ngModel)]="annonce.nombresSalledebain" name="nombresSalleDeBain">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card" *ngIf="newCat?.id === 3">
+      <h3><i class="bi bi-tree"></i> Détails du Terrain</h3>
+      <div class="form-group">
+        <label><i class="bi bi-rulers"></i> Surface (m²) :</label>
+        <input type="number" [(ngModel)]="annonce.surface" name="surface">
+      </div>
+      <div class="form-group">
+        <label><i class="bi bi-check-circle"></i> Constructible :</label>
+        <select [(ngModel)]="annonce.constructible" name="constructible">
+          <option [value]="true">Oui</option>
+          <option [value]="false">Non</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Section Équipements (Conditionnelle) -->
+    <div class="form-card" *ngIf="newCat?.id !== 3">
+      <h3><i class="bi bi-tools"></i> Équipements</h3>
+      <div class="form-grid checkbox-grid">
+        <label><input type="checkbox" [(ngModel)]="annonce.climatiseur" name="climatiseur"> <i class="bi bi-snow"></i> Climatiseur</label>
+        <label><input type="checkbox" [(ngModel)]="annonce.jardin" name="jardin"> <i class="bi bi-tree"></i> Jardin</label>
+        <label><input type="checkbox" [(ngModel)]="annonce.garage" name="garage"> <i class="bi bi-car-front"></i> Garage</label>
+        <label><input type="checkbox" [(ngModel)]="annonce.piscine" name="piscine"> <i class="bi bi-water"></i> Piscine</label>
+        <label><input type="checkbox" [(ngModel)]="annonce.balcon" name="balcon"> <i class="bi bi-building"></i> Balcon</label>
+        <label><input type="checkbox" [(ngModel)]="annonce.vueSurMer" name="vueSurMer"> <i class="bi bi-water"></i> Vue sur Mer</label>
+        <label><input type="checkbox" [(ngModel)]="annonce.wifi" name="wifi"> <i class="bi bi-wifi"></i> Wifi</label>
+        <label><input type="checkbox" [(ngModel)]="annonce.ascenseur" name="ascenseur"> <i class="bi bi-elevator"></i> Ascenseur</label>
+        <label><input type="checkbox" [(ngModel)]="annonce.interphone" name="interphone"> <i class="bi bi-telephone"></i> Interphone</label>
+      </div>
+    </div>
+
+    <!-- Section Images -->
+    <div class="form-card">
+      <h3><i class="bi bi-images"></i> Images</h3>
+      <div class="image-grid">
+        <div *ngFor="let img of annonce.images; let i = index" class="image-item">
+          <img [src]="img.preview" alt="Preview image">
+          <button class="delete-image" (click)="removeImage(i)"><i class="bi bi-trash"></i></button>
+        </div>
+        <div *ngFor="let empty of getEmptyImageSlots()" class="image-item add-image" (click)="triggerFileInput()">
+          <i class="bi bi-plus-lg"></i>
+        </div>
+      </div>
+      <input id="file-input" type="file" multiple (change)="onFileSelected($event)" accept="image/*" hidden>
+    </div>
+
+    <!-- Bouton de Soumission -->
+    <div *ngIf="!isEditMode" class="form-actions">
+      <button type="button" (click)="onSubmit()" class="btn btn-primary"><i class="bi bi-check-circle"></i> Publier l'Annonce</button>
+    </div>
+    <div *ngIf="isEditMode" class="form-actions">
+      <button type="button" (click)="onSubmit()" class="btn btn-primary"><i class="bi bi-check-circle"></i> Modifier l'Annonce</button>
+    </div>
+  </div>
+</div>

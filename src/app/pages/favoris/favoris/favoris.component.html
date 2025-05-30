@@ -1,0 +1,80 @@
+<app-navbar></app-navbar>
+
+<section class="container my-5 ">
+  <h2 class="text-center mb-4 text-dark fw-bold">Mes Favoris ❤️</h2>
+
+  <!-- Liste des favoris -->
+  <div class="row g-4 favoris-list">
+    <!-- Boucle sur les annonces favorites -->
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let favori of favoris">
+      <div class="card shadow-lg border-0 rounded-3 h-100">
+        <!-- Badge Disponible/Non disponible -->
+        <div class="position-absolute top-0 end-0 m-2">
+          <span class="badge bg-{{ favori.disponible == true ? 'success' : 'danger' }}">
+            {{ favori.disponible === true ? 'Disponible' : 'Non Disponible' }}
+          </span>
+        </div>
+
+        <!-- Icône Favoris -->
+        <div class="position-absolute top-0 start-0 m-2">
+          <i class="bi bi-heart-fill text-danger fs-4" (click)="retirerDesFavoris(favori.id); $event.stopPropagation()"></i>
+        </div>
+
+        <!-- Image du bien -->
+        <div class="favoris-image">
+          <img [src]="favori.images[0]" alt="Image du bien" class="card-img-top rounded-top" loading="lazy" />
+        </div>
+
+        <!-- Corps de la carte -->
+        <div class="card-body">
+          <h3 class="card-title text-dark">{{ favori.titre }}</h3>
+          <p class="card-text text-muted">{{ favori.description | slice:0:100 }}...</p>
+
+          <!-- Informations supplémentaires -->
+          <div class="favoris-info mb-3">
+            <div class="info-item mb-2">
+              <i class="bi bi-geo-alt me-2"></i>
+              <span>{{ favori.localisation }}</span>
+            </div>
+            <div class="info-item mb-2">
+              <i class="bi bi-house-door me-2"></i>
+              <span>{{ favori.category }}</span>
+            </div>
+            <div class="info-item mb-2">
+              <i class="bi bi-arrows-fullscreen me-2"></i>
+              <span>{{ favori.surface }} m²</span>
+            </div>
+            <div class="info-item mb-2" *ngIf="favori.nombresChambres">
+              <i class="bi bi-door-open me-2"></i>
+              <span>{{ favori.nombresChambres }} chambres</span>
+            </div>
+            <div class="info-item mb-2" *ngIf="favori.nombresEtages">
+              <i class="bi bi-building me-2"></i>
+              <span>{{ favori.nombresEtages }} étages</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="favoris-actions d-grid gap-2">
+            <button class="btn btn-outline-primary" (click)="voirDetails(favori.id); $event.stopPropagation()">
+              <i class="bi bi-eye me-2"></i> Voir Détails
+            </button>
+            <button class="btn btn-outline-warning" (click)="reserver(favori.id); $event.stopPropagation()">
+              <i class="bi bi-calendar-check me-2"></i> Réserver
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message si aucun favori -->
+    <div *ngIf="favoris.length === 0" class="col-12 text-center mt-5">
+      <div class="alert alert-info">
+        <p class="mb-3">Aucun bien ajouté aux favoris pour le moment.</p>
+        <a routerLink="/" class="btn btn-primary">Explorer les offres</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

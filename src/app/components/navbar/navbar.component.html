@@ -1,0 +1,79 @@
+<nav class="navbar navbar-expand-xl navbar-light bg-white shadow-sm fixed-top">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand fw-bold text-primary" href="#">
+      <img src="assets/Immo.jpg" alt="Logo" class="logo">
+    </a>
+
+    <!-- Toggle mobile -->
+    <button class="navbar-toggler" type="button" (click)="toggleMenu()" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menu -->
+    <div class="collapse navbar-collapse" id="navbarNav" [ngClass]="{'show': isMenuOpen}">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-12">
+        <li class="nav-item">
+          <a [routerLink]="['/accueil']" fragment="top" class="nav-link active">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/accueil']" fragment="annonces">Annonces</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/accueil']" fragment="why-choose-us">Nos Avantages</a>
+        </li>
+      </ul>
+
+      <!-- Boutons à droite -->
+      <div class="d-flex align-items-center navbar-buttons">
+        <a href="/add-bien" class="btn btn-warning">
+          <i class="bi bi-plus-circle"></i> Déposer une annonce
+        </a>
+        <a routerLink="/favoris" class="btn btn-outline-secondary">
+          <i class="bi bi-heart"></i> Mes Favoris
+        </a>
+
+        <!-- Si connecté -->
+        <div *ngIf="currentUser; else loginButton" class="d-flex align-items-center ms-3">
+          <div class="position-relative">
+            <app-notification-bell 
+              [unreadCount]="unreadCount"
+              [isOpen]="isNotificationsOpen"
+              (click)="toggleNotifications()">
+            </app-notification-bell>
+            
+            <app-notifications-list 
+              *ngIf="isNotificationsOpen"
+              [notifications]="notifications"
+              >
+            </app-notifications-list>
+          </div>
+
+
+          <!-- Dropdown utilisateur -->
+          <div class="dropdown">
+            <a class="d-flex user align-items-center text-dark text-decoration-none dropdown-toggle" href="#" role="button"
+               id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <img [src]="imagePath" alt="Avatar"
+                   style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+              <span class="ms-2 fw-semibold">{{ currentUser.prenom }} {{ currentUser.nom }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" (click)="redirectProfileBasedOnRole()">Mon profil</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" (click)="logout()">Se déconnecter</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Si non connecté -->
+        <ng-template #loginButton>
+          <a routerLink="/login" class="btn btn-primary">
+            Se connecter
+          </a>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,147 @@
+<section class="paiement-container">
+  <!-- Progress Bar -->
+  <div class="progress-steps">
+    <div class="step completed">
+      <div class="step-circle">1</div>
+      <p class="step-label">Sélection</p>
+    </div>
+    <div class="step active">
+      <div class="step-circle">2</div>
+      <p class="step-label">Paiement</p>
+    </div>
+    <div class="step">
+      <div class="step-circle">3</div>
+      <p class="step-label">Confirmation</p>
+    </div>
+    <div class="progress-line"></div>
+  </div>
+
+  <!-- Security Banner -->
+  <div class="security-banner">
+    <i class="bi bi-shield-lock"></i>
+    <span>Transactions 100% sécurisées - Données cryptées</span>
+  </div>
+
+  <!-- Order Summary -->
+  <div class="order-summary">
+    <h3><i class="bi bi-receipt"></i> Récapitulatif de commande</h3>
+    <div class="summary-card">
+      <div class="summary-item">
+        <span>Abonnement :</span>
+        <strong>{{ abonnement?.type }}</strong>
+      </div>
+      <div class="summary-item">
+        <span>Prix :</span>
+        <strong>{{ abonnement?.prix }} TND</strong>
+      </div>
+      <div class="summary-item total">
+        <span>Total à payer :</span>
+        <strong>{{ abonnement?.prix }} TND</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Methods -->
+  <div class="mode-paiement">
+    <h3><i class="bi bi-credit-card"></i> Méthode de paiement</h3>
+    <div class="paiement-options">
+      <button class="paiement-option" 
+              [ngClass]="{ 'active': modePaiement === 'carte' }"
+              (click)="modePaiement = 'carte'">
+        <div class="option-icon">
+          <i class="bi bi-credit-card-2-front"></i>
+        </div>
+        <span class="option-label">Carte bancaire</span>
+      </button>
+      
+      <button class="paiement-option" 
+              [ngClass]="{ 'active': modePaiement === 'virement' }"
+              (click)="modePaiement = 'virement'">
+        <div class="option-icon">
+          <i class="bi bi-bank2"></i>
+        </div>
+        <span class="option-label">Virement bancaire</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Card Payment Form -->
+  <div *ngIf="modePaiement === 'carte'" class="formulaire-paiement">
+    <h3><i class="bi bi-credit-card"></i> Informations de paiement</h3>
+    
+    <form (ngSubmit)="onSubmit()" class="paiement-form">
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+      
+      <div class="form-submit">
+        <button type="submit" class="btn-payer" [disabled]="processingPayment">
+          <span *ngIf="!processingPayment">
+            <i class="bi bi-lock-fill"></i> Payer {{ abonnement?.prix }} TND
+          </span>
+          <span *ngIf="processingPayment">
+            <i class="bi bi-arrow-repeat spin"></i> Traitement en cours...
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+  <!-- Bank Transfer Instructions -->
+  <div *ngIf="modePaiement === 'virement'" class="virement-instructions">
+    <h3><i class="bi bi-bank2"></i> Instructions de virement</h3>
+    
+    <div class="instructions-card">
+      <div class="bank-info">
+        <div class="info-item">
+          <span class="info-label">Banque :</span>
+          <span class="info-value">Banque Tunisienne</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">IBAN :</span>
+          <span class="info-value">TN59 1234 5678 9012 3456 7890</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">BIC :</span>
+          <span class="info-value">BATNTNTT</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Bénéficiaire :</span>
+          <span class="info-value">YourApp SARL</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Montant :</span>
+          <span class="info-value">{{ abonnement?.prix }} TND</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Référence :</span>
+          <span class="info-value">ABN-{{ abonnement?.type.slice(0,3).toUpperCase() }}</span>
+        </div>
+      </div>
+      
+      <div class="instructions-text">
+        <p>
+          <i class="bi bi-info-circle"></i> Veuillez effectuer le virement dans les 48h pour activer votre abonnement.
+        </p>
+        <p>
+          <i class="bi bi-envelope"></i> Après paiement, envoyez la preuve de virement à 
+          <a href="mailto:paiement@yourapp.com">paiement&#64;yourapp.com</a>
+        </p>
+      </div>
+      
+      <button class="btn-confirm">
+        <i class="bi bi-check-circle"></i> J'ai effectué le virement
+      </button>
+    </div>
+  </div>
+  
+  <!-- Payment Processing Overlay -->
+  <div *ngIf="processingPayment" class="processing-overlay">
+    <div class="processing-content">
+      <div class="spinner">
+        <i class="bi bi-arrow-repeat"></i>
+      </div>
+      <h4>Traitement de votre paiement</h4>
+      <p>Veuillez patienter quelques instants...</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,6 @@
+<!-- notification-bell.component.html -->
+<div class="notification-bell" (click)="toggle.emit()">
+  <i class="bi bi-bell-fill"></i>
+  <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+  <span *ngIf="hasNewNotifications && !isOpen" class="pulse-dot"></span>
+</div>

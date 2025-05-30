@@ -1,0 +1,219 @@
+<main class="page-wrapper">
+    <!-- Header-->
+    <app-navbar id="top"></app-navbar>
+  
+    <!-- Page container-->
+    <div class="container-fluid mt-5 pt-5 p-0">
+      <div class="row g-0 mt-n3">
+        <!-- Filters sidebar (Offcanvas on mobile)-->
+        <aside class="col-lg-4 col-xl-3 border-top-lg border-end-lg shadow-sm px-3 px-xl-4 px-xxl-5 pt-lg-2">
+            <div class="offcanvas-lg offcanvas-start" id="filters-sidebar">
+              <div class="offcanvas-header d-flex d-lg-none align-items-center">
+                <h2 class="h5 mb-0">Filters</h2>
+                <button class="btn-close" type="button" data-bs-dismiss="offcanvas" ></button>
+              </div>
+              <div class="offcanvas-body py-lg-4">
+                <!-- Location filter -->
+                <div class="filter-section mb-4">
+                  <h3 class="h6 filter-title">Location</h3>
+                  <select class="form-select mb-2" id="location" (change)="LocationSearch()">
+                    <option value="" disabled>Choose city</option>
+                    <option value="Chicago">Chicago</option>
+                    <option value="Dallas">Dallas</option>
+                    <option value="Los Angeles">Los Angeles</option>
+                    <option value="New York" selected>New York</option>
+                    <option value="San Diego">San Diego</option>
+                  </select>
+                  <select class="form-select" id="district" (change)="DistrictSearch()">
+                    <option value="" selected disabled>Choose district</option>
+                    <option value="Brooklyn">Brooklyn</option>
+                    <option value="Manhattan">Manhattan</option>
+                    <option value="Staten Island">Staten Island</option>
+                    <option value="The Bronx">The Bronx</option>
+                    <option value="Queens">Queens</option>
+                  </select>
+                </div>
+          
+                <!-- Price range slider -->
+                <div class="filter-section mb-4">
+                  <h3 class="h6 filter-title">Price per month</h3>
+                  <div class="d-flex align-items-center mb-2">
+                    <input type="range" class="form-range" id="priceRange" min="0" max="5000" step="100" [(ngModel)]="minValue" (input)="filterByPrice()">
+                    <input type="range" class="form-range" id="priceRangeMax" min="0" max="5000" step="100" [(ngModel)]="maxValue" (input)="filterByPrice()">
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <span>${{ minValue }}</span>
+                    <span>${{ maxValue }}</span>
+                  </div>
+                </div>
+          
+                <!-- Property type filter -->
+                <div class="filter-section mb-4">
+                  <h3 class="h6 filter-title">Property type</h3>
+                  <div class="overflow-auto filter-scroll">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="house" (change)="changeProperty($event, 'House')">
+                      <label class="form-check-label fs-sm" for="house">House</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="apartment" (change)="changeProperty($event, 'Apartment')">
+                      <label class="form-check-label fs-sm" for="apartment">Apartment</label>
+                    </div>
+                    <!-- Add more property types here -->
+                  </div>
+                </div>
+          
+                <!-- Bedrooms filter -->
+                <div class="filter-section mb-4">
+                  <h3 class="h6 filter-title">Beds &amp; baths</h3>
+                  <label class="d-block fs-sm mb-1">Bedrooms</label>
+                  <div class="btn-group btn-group-sm" role="group" aria-label="Choose number of bedrooms">
+                    <input class="btn-check" type="radio" id="studio" name="bedrooms">
+                    <label class="btn btn-outline-secondary fw-normal" for="studio">Studio</label>
+                    <input class="btn-check" type="radio" id="bedrooms-1" name="bedrooms" checked (click)="bedrooms('1')">
+                    <label class="btn btn-outline-secondary fw-normal" for="bedrooms-1">1</label>
+                    <input class="btn-check" type="radio" id="bedrooms-2" name="bedrooms" (click)="bedrooms('2')">
+                    <label class="btn btn-outline-secondary fw-normal" for="bedrooms-2">2</label>
+                    <input class="btn-check" type="radio" id="bedrooms-3" name="bedrooms" (click)="bedrooms('3')">
+                    <label class="btn btn-outline-secondary fw-normal" for="bedrooms-3">3</label>
+                    <input class="btn-check" type="radio" id="bedrooms-4" name="bedrooms" (click)="bedrooms('4')">
+                    <label class="btn btn-outline-secondary fw-normal" for="bedrooms-4">4+</label>
+                  </div>
+                </div>
+          
+                <!-- Bathrooms filter -->
+                <div class="filter-section mb-4">
+                  <label class="d-block fs-sm pt-2 my-1">Bathrooms</label>
+                  <div class="btn-group btn-group-sm" role="group" aria-label="Choose number of bathrooms">
+                    <input class="btn-check" type="radio" id="bathrooms-1" name="bathrooms" (click)="bathrooms('1')">
+                    <label class="btn btn-outline-secondary fw-normal" for="bathrooms-1">1</label>
+                    <input class="btn-check" type="radio" id="bathrooms-2" name="bathrooms" (click)="bathrooms('2')">
+                    <label class="btn btn-outline-secondary fw-normal" for="bathrooms-2">2</label>
+                    <input class="btn-check" type="radio" id="bathrooms-3" name="bathrooms" (click)="bathrooms('3')">
+                    <label class="btn btn-outline-secondary fw-normal" for="bathrooms-3">3</label>
+                    <input class="btn-check" type="radio" id="bathrooms-4" name="bathrooms" (click)="bathrooms('4')">
+                    <label class="btn btn-outline-secondary fw-normal" for="bathrooms-4">4</label>
+                  </div>
+                </div>
+          
+                <!-- Square metres filter -->
+                <div class="filter-section mb-4">
+                  <h3 class="h6 filter-title">Square metres</h3>
+                  <div class="d-flex align-items-center">
+                    <input class="form-control w-100" type="number" min="20" max="500" step="10" placeholder="Min" id="minValue" (keyup)="metresSearch()">
+                    <div class="mx-2">&mdash;</div>
+                    <input class="form-control w-100" type="number" min="20" max="500" step="10" placeholder="Max" id="maxValue" (keyup)="metresSearch()">
+                  </div>
+                </div>
+          
+                <!-- Amenities filter -->
+                <div class="filter-section mb-4">
+                  <h3 class="h6 filter-title">Amenities</h3>
+                  <div class="overflow-auto filter-scroll">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="air-condition" >
+                      <label class="form-check-label fs-sm" for="air-condition">Air conditioning</label>
+                    </div>
+                    <!-- Add more amenities here -->
+                  </div>
+                </div>
+          
+                <!-- Reset filters button -->
+                <div class="border-top py-4">
+                  <button class="btn btn-outline-primary w-100" type="button"><i class="fi-rotate-right me-2"></i>Reset filters</button>
+                </div>
+              </div>
+            </div>
+          </aside>
+  
+        <!-- Page content-->
+        <div class="col-lg-8 col-xl-9 position-relative overflow-hidden pb-5 pt-4 px-3 px-xl-4 px-xxl-5">
+          <!-- Map popup-->
+          <div class="map-popup invisible" id="map">
+            <button class="btn btn-icon btn-light btn-sm shadow-sm rounded-circle" type="button" data-bs-toggle-class="invisible" data-bs-target="#map"><i class="fi-x fs-xs"></i></button>
+          </div>
+  
+          <!-- Breadcrumb-->
+  
+          <!-- Title-->
+          <div class="d-sm-flex align-items-center justify-content-between pb-3 pb-sm-4">
+            <h1 class="h2 mb-sm-0">Property for rent</h1>
+            <a class="d-inline-block fw-bold text-decoration-none py-1" href="javascript:void(0);" data-bs-toggle-class="invisible" data-bs-target="#map"><i class="fi-map me-2"></i>Map view</a>
+          </div>
+  
+          <!-- Sorting-->
+          <div class="d-flex flex-sm-row flex-column align-items-sm-center align-items-stretch my-2">
+            <div class="d-flex align-items-center flex-shrink-0">
+              <label class="fs-sm me-2 pe-1 text-nowrap" for="sortby"><i class="fi-arrows-sort text-muted mt-n1 me-2"></i>Sort by:</label>
+              <select class="form-select form-select-sm" id="sortby" (change)="SortFilter()">
+                <option>Newest</option>
+                <option value="Atitle">Popularity</option>
+                <option value="Dprice">Low - High Price</option>
+                <option value="Aprice">High - Low Price</option>
+                <option value="Dbad">High rating</option>
+                <option value="Abad">Average Rating</option>
+              </select>
+            </div>
+            <hr class="d-none d-sm-block w-100 mx-4">
+            <div class="d-none d-sm-flex align-items-center flex-shrink-0 text-muted"><i class="fi-check-circle me-2"></i><span class="fs-sm mt-n1">{{dataCount}} results</span></div>
+          </div>
+  
+          <!-- Catalog grid-->
+          <div class="row g-4 py-4">
+            @for(data of topOfferDatas; track $index) {
+            <div class="col-sm-6 col-xl-4">
+              <div class="card shadow-sm card-hover border-0 h-100">
+                <div class="tns-carousel-wrapper card-img-top card-img-hover">
+                  <a class="img-overlay" routerLink="/catalog/single-v1"></a>
+                  <div class="position-absolute start-0 top-0 pt-3 ps-3">
+                    <span class="d-table badge bg-success mb-1" *ngIf="data.verified_btn">{{data.verified_btn}}</span>
+                    <span class="d-table badge {{data.btn_color}}">{{data.btn}}</span>
+                  </div>
+                  <div class="content-overlay end-0 top-0 pt-3 pe-3">
+                    <button class="btn btn-icon btn-light btn-xs text-primary rounded-circle" type="button" placement="left" ngbTooltip="Add to Wishlist"><i class="fi-heart"></i></button>
+                  </div>
+                  <div class="carousel">
+                    @for(img of data.image; track $index) {
+                    <div class="swiper-slide">
+                      <img src="{{img.img}}" alt="Image" class="h-100">
+                    </div>
+                    }
+                  </div>
+                </div>
+                <div class="card-body position-relative pb-3">
+                  <h4 class="mb-1 fs-xs fw-normal text-uppercase text-primary">{{data.sale}}</h4>
+                  <h3 class="h6 mb-2 fs-base"><a class="nav-link stretched-link" routerLink="/catalog/single-v1">{{data.title}}</a></h3>
+                  <p class="mb-2 fs-sm text-muted">{{data.address}}</p>
+                  <div class="fw-bold"><i class="fi-cash mt-n1 me-2 lead align-middle opacity-70"></i>${{data.price}}</div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-center mx-3 pt-3 text-nowrap">
+                  <span class="d-inline-block mx-1 px-2 fs-sm">{{data.bad}}<i class="fi-bed ms-1 mt-n1 fs-lg text-muted"></i></span>
+                  <span class="d-inline-block mx-1 px-2 fs-sm">{{data.bath}}<i class="fi-bath ms-1 mt-n1 fs-lg text-muted"></i></span>
+                  <span class="d-inline-block mx-1 px-2 fs-sm">{{data.car}}<i class="fi-car ms-1 mt-n1 fs-lg text-muted"></i></span>
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+  
+          <!-- Pagination-->
+          <nav class="border-top pb-md-4 pt-4 mt-2" aria-label="Pagination">
+            <ul class="pagination mb-1">
+              <li class="page-item d-sm-none"><span class="page-link page-link-static">1 / 5</span></li>
+              <li class="page-item active d-none d-sm-block" aria-current="page"><span class="page-link">1<span class="visually-hidden">(current)</span></span></li>
+              <li class="page-item d-none d-sm-block"><a class="page-link" href="javascript:void(0);">2</a></li>
+              <li class="page-item d-none d-sm-block"><a class="page-link" href="javascript:void(0);">3</a></li>
+              <li class="page-item d-none d-sm-block">...</li>
+              <li class="page-item d-none d-sm-block"><a class="page-link" href="javascript:void(0);">8</a></li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0);" aria-label="Next"><i class="fi-chevron-right"></i></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Footer-->
+  <app-footer></app-footer>
+  
+ 

@@ -1,0 +1,113 @@
+/* styles.css ou component.css */
+.container {
+  padding-top: 80px;
+}
+.favoris-list {
+  margin-bottom: 200px;
+ 
+}
+
+.card {
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.favoris-info {
+  margin-bottom: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #555;
+  font-size: 1rem;
+}
+
+.info-item i {
+  color: #00796b;
+  font-size: 1.2rem;
+}
+
+.favoris-actions .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.favoris-actions .btn-outline-primary {
+  border-color: #00796b;
+  color: #00796b;
+}
+
+.favoris-actions .btn-outline-primary:hover {
+  background-color: #00796b;
+  color: white;
+}
+
+.favoris-actions .btn-outline-warning {
+  border-color: #ffc107;
+  color: #ffc107;
+}
+
+.favoris-actions .btn-outline-warning:hover {
+  background-color: #ffc107;
+  color: black;
+}
+
+.badge {
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+/* Responsive pour les petits écrans */
+@media (max-width: 768px) {
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .card-text {
+    font-size: 0.8rem;
+  }
+
+  .favoris-actions .btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+}

@@ -1,0 +1,394 @@
+/* Base Styles */
+.abonnement-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Poppins', sans-serif;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.header-section h2 {
+  color: #2c3e50;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.header-section .subtitle {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+/* Status Section */
+.status-section {
+  margin-bottom: 3rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.section-header h3 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge {
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-free {
+  background-color: #f0f0f0;
+  color: #7f8c8d;
+}
+
+.badge-active {
+  background-color: #e3f9f5;
+  color: #0a5236;
+}
+
+.abonnement-card {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: #f9f9f9;
+  border-radius: 12px;
+  border-left: 4px solid #56b3a8;
+}
+
+.abonnement-icon i {
+  font-size: 2.5rem;
+  color: #56b3a8;
+}
+
+.abonnement-details {
+  flex: 1;
+}
+
+.abonnement-details p {
+  margin: 0.75rem 0;
+  color: #34495e;
+}
+
+.abonnement-details strong {
+  color: #2c3e50;
+  min-width: 100px;
+  display: inline-block;
+}
+
+.unlimited {
+  color: #0a5236;
+  font-weight: 600;
+}
+
+.no-abonnement .alert {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.no-abonnement .alert i {
+  font-size: 1.5rem;
+  color: #3498db;
+}
+
+.no-abonnement .alert h4 {
+  margin: 0 0 0.25rem 0;
+  color: #2c3e50;
+}
+
+.no-abonnement .alert p {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+/* Resume Section */
+.resume-section {
+  margin-bottom: 3rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.resume-card {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f6fbf9 0%, #e3f9f5 100%);
+  border-radius: 12px;
+  border: 1px solid #d1f0e8;
+  margin-bottom: 1.5rem;
+}
+
+.resume-icon i {
+  font-size: 3rem;
+  color: #0a5236;
+}
+
+.resume-details h4 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.resume-details .price {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0a5236;
+  margin-bottom: 1.5rem;
+}
+
+.resume-details .price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #7f8c8d;
+}
+
+.resume-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.resume-details li {
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #34495e;
+}
+
+.resume-details li i {
+  color: #56b3a8;
+}
+
+.btn-continue {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(90deg, #56b3a8 0%, #0a5236 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-continue:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(86, 179, 168, 0.4);
+}
+
+/* Options Section */
+.options-section {
+  margin-top: 3rem;
+}
+
+.options-section .section-description {
+  color: #7f8c8d;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.abonnement-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.abonnement-option {
+  background: rgb(241, 238, 238);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  border: 1px solid #eee;
+}
+
+.abonnement-option.popular {
+  border: 1px solid #56b3a8;
+}
+
+.abonnement-option.popular::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #56b3a8, #0a5236);
+}
+
+.abonnement-header {
+  padding: 1.5rem 1.5rem 1rem;
+  text-align: center;
+  position: relative;
+}
+
+.abonnement-header .abonnement-icon i {
+  font-size: 2.5rem;
+  color: #56b3a8;
+  margin-bottom: 1rem;
+}
+
+.abonnement-header h4 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.popular-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #0a5236;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.popular-badge i {
+  font-size: 0.75rem;
+}
+
+.abonnement-body {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.abonnement-body .price {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 1rem 0;
+}
+
+.abonnement-body .price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #7f8c8d;
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+.features-list li {
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #34495e;
+}
+
+.features-list li i {
+  color: #56b3a8;
+}
+
+.btn {
+  display: block;
+  width: calc(100% - 3rem);
+  margin: 0 auto 1.5rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: none;
+  background: #56b3a8;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: #488d8d;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(86, 179, 168, 0.3);
+}
+
+.btn:disabled {
+  background: #f0f0f0;
+  color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.abonnement-option.selected .btn {
+  background: #0a5236;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .abonnement-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .resume-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .resume-details ul {
+    text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .abonnement-container {
+    padding: 1.5rem;
+  }
+  
+  .abonnement-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .header-section h2 {
+    font-size: 1.8rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .abonnement-card, .resume-card {
+    padding: 1.25rem;
+  }
+}

@@ -1,0 +1,148 @@
+.utilisateurs-container {
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f8ff;
+  }
+  
+  h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  /* Barre de recherche */
+  .search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .search-bar input,
+  .search-bar select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .search-bar input:focus,
+  .search-bar select:focus {
+    border-color: #56b3a8;
+    outline: none;
+  }
+  
+  /* Tableau des utilisateurs */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table th,
+  .table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table th {
+    background: #56b3a8;
+    color: white;
+  }
+  
+  .user-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  /* Boutons d'actions */
+  .btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .btn-supprimer {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-supprimer:hover {
+    background: #c82333;
+    transform: scale(1.05);
+  }
+  
+  .btn-activer {
+    background: #28a745;
+    color: white;
+  }
+  
+  .btn-desactiver {
+    background: #ffc107;
+    color: black;
+  }
+  
+  .btn-activer:hover,
+  .btn-desactiver:hover {
+    transform: scale(1.05);
+  }
+  
+  .btn-reservations {
+    background: #007bff;
+    color: white;
+  }
+  
+  .btn-reservations:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  .btn-annonces {
+    background: #17a2b8;
+    color: white;
+  }
+  
+  .btn-annonces:hover {
+    background: #138496;
+    transform: scale(1.05);
+  }
+  
+  /* Message si aucun résultat */
+  .no-results {
+    text-align: center;
+    color: #666;
+    margin-top: 20px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .utilisateurs-container {
+      width: 450px;
+    }
+  
+    .search-bar {
+      flex-direction: column;
+    }
+  
+    .table th,
+    .table td {
+      padding: 8px;
+    }
+  
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }

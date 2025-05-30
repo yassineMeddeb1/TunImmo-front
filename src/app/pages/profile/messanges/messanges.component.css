@@ -1,0 +1,165 @@
+.messages-container {
+  height: 85%;
+  
+  padding: 20px;
+  background: #a8ebe3;
+  position: relative;
+  border-radius: 15px;
+  
+}
+.contacts-list {
+  background-color: #ffffff;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+  height: 100%;
+  padding: 10px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.contact-item:hover {
+  background-color: #f1f1f1;
+}
+
+.contact-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.contact-info h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.contact-info p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.contact-info small {
+  font-size: 12px;
+  color: #999;
+}
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  height: 100%;
+  padding: 0;
+}
+
+.chat-header {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+}
+
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.message {
+  margin-bottom: 10px;
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.message.sent {
+  background-color: #00796b;
+  color: white;
+  margin-left: auto;
+}
+
+.message.received {
+  background-color: #f1f1f1;
+  color: #333;
+  margin-right: auto;
+}
+
+.message small {
+  display: block;
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+
+.chat-input button {
+  padding: 10px 20px;
+  background-color: #00796b;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background-color: #005a4f;
+}
+.no-contact-selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #666;
+  background-color: #ffffff9a;
+  height: 100%;
+}
+@media (max-width: 768px) {
+  .contacts-list {
+    width: 100%;
+    height: 200px; /* Hauteur fixe pour la liste des contacts */
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .chat-box, .no-contact-selected {
+    width: 100%;
+    height: calc(100vh - 200px); /* Ajustement de la hauteur */
+  }
+
+  .chat-header {
+    padding: 10px;
+  }
+
+  .chat-messages {
+    padding: 10px;
+  }
+
+  .chat-input {
+    padding: 10px;
+  }
+}

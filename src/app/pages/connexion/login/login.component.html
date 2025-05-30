@@ -1,0 +1,94 @@
+<!-- login.component.html -->
+<app-navbar></app-navbar>
+
+<div class="login-container">
+    <!-- Section du formulaire -->
+    <div class="login-box">
+        <h2 class="text-center">Connexion</h2>
+        <p class="text-muted text-center mb-3">Accédez à votre compte</p>
+
+        <!-- Formulaire de connexion -->
+        <form (ngSubmit)="onLogin()">
+            <!-- Email -->
+            <div class="input-group mb-5">
+                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                <input type="email" class="form-control" placeholder="Adresse e-mail" required [(ngModel)]="email" name="email">
+            </div>
+
+            <!-- Mot de passe -->
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="Mot de passe" required [(ngModel)]="password" name="password">
+                <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
+                    <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+            </div>
+
+            <!-- Bouton de connexion -->
+            <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+        </form>
+
+        <!-- Liens -->
+        <div class="text-center mt-3">
+            <a  class="text-muted" (click)="openForgotPasswordModal()">Mot de passe oublié ?</a>
+        </div>
+        <div class="text-center mt-2">
+            <span>Vous n'avez pas de compte ?</span> 
+            <a routerLink="/register" class="text-primary fw-bold">Créer un compte</a>
+        </div>
+    </div>
+
+    <div class="login-image d-none d-lg-block">
+        <img src="assets/appart4.jpg" alt="Illustration de connexion">
+    </div>
+</div>
+
+<!-- Modal Mot de passe oublié -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">Réinitialisation du mot de passe</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPasswordSubmit()">
+                    <div class="mb-3">
+                        <label for="forgotEmail" class="form-label">Adresse email</label>
+                        <input type="email" class="form-control" id="forgotEmail" 
+                               formControlName="email" placeholder="Entrez votre email">
+                        <div *ngIf="forgotPasswordForm.get('email')?.invalid && 
+                                   (forgotPasswordForm.get('email')?.dirty || forgotPasswordForm.get('email')?.touched)"
+                             class="text-danger mt-1">
+                            <small *ngIf="forgotPasswordForm.get('email')?.errors?.['required']">
+                                L'email est requis
+                            </small>
+                            <small *ngIf="forgotPasswordForm.get('email')?.errors?.['email']">
+                                Veuillez entrer une adresse email valide
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="forgotPasswordMessage" class="alert alert-success mt-3">
+                        {{ forgotPasswordMessage }}
+                    </div>
+                    <div *ngIf="forgotPasswordError" class="alert alert-danger mt-3">
+                        {{ forgotPasswordError }}
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary" 
+                                [disabled]="forgotPasswordForm.invalid || isSubmitting">
+                            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            {{ isSubmitting ? 'Envoi en cours...' : 'Envoyer le lien' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-why-choose-us></app-why-choose-us>
+<app-footer></app-footer>

@@ -1,0 +1,66 @@
+.forbidden-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 20px;
+    animation: fadeIn 0.8s ease-in-out;
+  }
+  
+  .forbidden-img {
+    max-width: 300px;
+    margin-bottom: 30px;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  h1 {
+    font-size: 3rem;
+    color: #e74c3c;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .btn-retour {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-retour:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Animation d’apparition */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Animation de flottement */
+  @keyframes float {
+    0% {
+      transform: translatey(0px);
+    }
+    50% {
+      transform: translatey(-15px);
+    }
+    100% {
+      transform: translatey(0px);
+    }
+  }
+  

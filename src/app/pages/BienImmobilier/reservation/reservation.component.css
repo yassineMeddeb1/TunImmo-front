@@ -1,0 +1,305 @@
+/* General styles */
+.container-fluid {
+  padding-top: 60px;
+  padding-bottom: 100px;
+  background-color: #f8fafc;
+}
+
+:host {
+  display: block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Wave divider effect */
+.wave-divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.wave-divider svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 60px;
+}
+
+.wave-divider .shape-fill {
+  fill: #FFFFFF;
+}
+
+/* Teal colors */
+.bg-teal {
+  background-color: #00796b !important;
+}
+
+.text-teal {
+  color: #00796b !important;
+}
+
+.bg-teal-light {
+  background-color: #b2dfdb !important;
+}
+
+.bg-teal-lighter {
+  background-color: #c9dddc !important;
+}
+
+.border-teal-light {
+  border-color: #b2dfdb !important;
+}
+
+.text-teal-dark {
+  color: #00695c !important;
+}
+
+/* Danger colors */
+.bg-danger-light {
+  background-color: #ffebee !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+/* Gray colors */
+.text-gray-600 {
+  color: #6c757d !important;
+}
+
+.text-gray-700 {
+  color: #495057 !important;
+}
+
+.text-gray-800 {
+  color: #343a40 !important;
+}
+
+.bg-gray-100 {
+  background-color: #f8f9fa !important;
+}
+
+.border-gray-200 {
+  border-color: #e9ecef !important;
+}
+
+/* Card styles */
+.card {
+  border-radius: 0.75rem !important;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-header {
+  padding: 1.5rem 2rem !important;
+  position: relative;
+}
+
+.hover-scale:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Shadow utilities */
+.shadow-xs {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom datepicker styles */
+.date-picker-custom .dp-picker-input {
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+  width: 100%;
+  font-size: 0.925rem;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.date-picker-custom .dp-picker-input:focus {
+  border-color: #00796b !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 121, 107, 0.25) !important;
+}
+
+/* Custom button */
+.btn-teal {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1.5rem !important;
+  font-size: 1rem;
+}
+
+.btn-teal:hover {
+  background-color: #00695c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 121, 107, 0.3);
+}
+
+.btn-teal:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 121, 107, 0.2);
+}
+
+.btn-teal:disabled {
+  background-color: #b2dfdb !important;
+  transform: none !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+}
+
+/* Badge */
+.badge.bg-teal-light {
+  background-color: #b2dfdb;
+  color: #00695c;
+  font-weight: 500;
+  padding: 0.35em 0.65em !important;
+}
+
+/* Alert */
+.alert.bg-teal-lighter {
+  background-color: #e0f2f1 !important;
+  border-color: #b2dfdb !important;
+  color: #00695c !important;
+  border-radius: 0.5rem !important;
+  padding: 1rem 1.25rem !important;
+}
+
+/* Rounded corners */
+.rounded-lg {
+  border-radius: 0.75rem !important;
+}
+
+/* Custom datepicker overrides */
+::ng-deep .dp-picker-input {
+  cursor: pointer !important;
+}
+
+::ng-deep .dp-calendar-nav-container {
+  border-bottom: 1px solid #e0f2f1 !important;
+  padding: 10px 0 !important;
+}
+
+::ng-deep .dp-calendar-nav-container button {
+  color: #00796b !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .dp-calendar-day {
+  border-radius: 50% !important;
+  transition: all 0.2s ease;
+  margin: 2px !important;
+}
+
+::ng-deep .dp-calendar-day:hover:not(.dp-selected):not(.disabled) {
+  background-color: #e0f2f1 !important;
+}
+
+::ng-deep .dp-calendar-day.disabled {
+  color: #dc3545 !important;
+  text-decoration: line-through;
+  background-color: #fff5f5 !important;
+  position: relative;
+}
+
+::ng-deep .dp-calendar-day.disabled::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background-color: #dc3545;
+  transform: rotate(-15deg);
+}
+
+::ng-deep .dp-current-day {
+  border-color: #00796b !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .dp-selected {
+  background-color: #00796b !important;
+  color: white !important;
+  font-weight: bold !important;
+  box-shadow: 0 2px 5px rgba(0, 121, 107, 0.3) !important;
+}
+
+::ng-deep .dp-day-calendar-container {
+  background-color: white !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #e0f2f1 !important;
+  padding: 10px !important;
+}
+
+::ng-deep .dp-weekday {
+  color: #00796b !important;
+  font-weight: bold !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .sticky-top {
+    position: relative !important;
+  }
+  
+  .col-md-6 {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+  
+  .wave-divider {
+    display: none;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Tooltip for disabled dates */
+::ng-deep .dp-calendar-day.disabled:hover::before {
+  content: "Indisponible";
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #dc3545;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+::ng-deep .dp-calendar-day.disabled:hover::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #dc3545;
+}

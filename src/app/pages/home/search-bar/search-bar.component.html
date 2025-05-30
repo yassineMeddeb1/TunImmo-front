@@ -1,0 +1,118 @@
+<!-- Section Top Offers -->
+<section class="container-fluid mb-2 pb-md-4 px-3">
+  <div class="d-flex align-items-center justify-content-between mb-2">
+    <h4 class="text-center text-dark ms-5">Nos Meilleures Offres</h4>
+    <a class="btn btn-link fw-normal p-0" routerLink="/catalog/rent">
+      View all <i class="fi-arrow-long-right ms-2"></i>
+    </a>
+  </div>
+
+  <!-- Carrousel -->
+  <div class="swiper default-swiper rounded ms-3">
+    <ngx-slick-carousel [config]="config" class="slickSwiper">
+      <div *ngFor="let data of topOfferData" class="swiper-slide" ngxSlickItem>
+        <!-- Carte -->
+        <div class="card property-card position-relative" (click)="navigateToDetails(data.id!)">
+          <!-- Icône Favoris -->
+          <div class="position-absolute top-0 start-0 m-2 favoris-icon" (click)="toggleFavoris(data, $event)">
+            <i class="bi bi-heart{{ isFavoris(data) ? '-fill' : '' }} text-danger fs-4"></i>
+          </div>
+
+          <!-- Badges -->
+          <div class="badges">
+            <span class="badge bg-success">{{ data.disponible ? 'Disponible' : 'Indisponible' }}</span>
+            <span class="badge" [ngClass]="data.typeTransaction === 'VENTE' ? 'bg-danger' : 'bg-warning'">
+              {{ data.typeTransaction }}
+            </span>
+          </div>
+
+          <!-- Image -->
+          <div class="card-img-top position-relative overflow-hidden">
+            <img [src]="data.imageUrls?.[0] || 'assets/appart3.jpg'" 
+                 class="img-fluid property-image" 
+                 alt="{{data.titre}}">
+          </div>
+
+          <!-- Corps de la carte -->
+          <div class="card-body">
+            <h6 class="h6 mb-2">
+              {{ data.titre }}
+            </h6>
+            <p class="text-muted small text-truncate">{{ data.description }}</p>
+            <div class="price text-success fw-bold">
+              <i class="fi-cash me-2"></i> {{ data.prix | currency: 'TND' }}
+            </div>
+          </div>
+
+          <!-- Bouton de réservation -->
+          <div *ngIf="data.typeTransaction === 'LOCATION'" 
+               class="card-footer bg-transparent border-0 reservation-button"
+               (click)="reserver(data.id!, $event)">
+            <button class="btn btn-primary w-100">
+              <i class="bi bi-calendar-check me-2"></i> Réserver
+            </button>
+          </div>
+
+          <!-- Pied de carte -->
+          <div class="card-footer d-flex justify-content-between text-muted small">
+            <span><i class="bi bi-door-closed me-1"></i> {{ data.nombresChambres }} Ch</span>
+            <span><i class="bi bi-bathtub me-1"></i> {{ data.nombresSalledebain }} SDB</span>
+            <span><i class="bi bi-car-front me-1"></i> {{ data.garage ? 'Oui' : 'Non' }}</span>
+          </div>
+        </div>
+      </div>
+    </ngx-slick-carousel>
+  </div>
+</section>
+
+<!-- Section Ajouté Aujourd'hui -->
+<section class="container-fluid mb-4 pb-4 pt-1 ms-3">
+  <div class="d-flex align-items-end align-items-lg-center justify-content-between mb-2 pb-md-2">
+    <div class="d-flex w-100 align-items-center justify-content-between justify-content-lg-start">
+      <h4 class="h3 mb-0 me-md-4 ms-5">Plus récent</h4>
+      
+     
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div *ngFor="let item of filterredImages" class="col-md-6 col-lg-6">
+      <div class="card bg-size-cover bg-position-center border-0 overflow-hidden h-100 shadow-sm rounded-3 property-card"
+           (click)="navigateToDetails(item.id!)"
+           [style.backgroundImage]="'url(' + (item.imageUrls?.[0] || 'assets/appart3.jpg') + ')'">
+        <span class="img-gradient-overlay"></span>
+        <div class="card-body content-overlay pb-0">
+          <div class="d-flex">
+            <span class="badge fs-sm bg-warning text-dark px-3 py-1 rounded-pill">New</span>
+            <div class="position-absolute top-0 start-0 m-2 favoris-icon" (click)="toggleFavoris(item, $event)">
+              <i class="bi bi-heart{{ isFavoris(item) ? '-fill' : '' }} text-danger fs-4"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer content-overlay border-0 pt-0 pb-4">
+          <div class="d-sm-flex justify-content-between align-items-end pt-5 mt-2 mt-sm-5">
+            <div class="text-decoration-none text-light pe-2">
+              <div class="fs-sm text-uppercase pt-2 mb-1 text-warning">{{item.typeTransaction}}</div>
+              <h3 class="h5 text-light fw-bold mb-1">{{item.titre}}</h3>
+              <div class="fs-sm opacity-75"><i class="bi bi-geo-alt me-1"></i>
+                 <div class="fs-sm pt-1 mb-1 text-light">{{item.commune?.nom}} </div></div>
+              
+            </div>
+            <div class="btn-group ms-n2 ms-sm-0 mt-3">
+              <button *ngIf="item.typeTransaction === 'LOCATION'" 
+                      class="btn btn-primary px-3 shadow" 
+                      style="height: 2.75rem;"
+                      (click)="reserver(item.id!, $event)">
+                Réserver
+              </button>
+              <button class="btn btn-light btn-icon border-0 fs-sm heart-btn" (click)="toggleFavoris(item, $event)" >
+                <i class="bi bi-heart{{ isFavoris(item) ? '-fill' : '' }} text-danger "></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+</section>
+

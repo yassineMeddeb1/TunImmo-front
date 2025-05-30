@@ -1,0 +1,51 @@
+<app-navbar></app-navbar>
+<div class="profile-container d-flex flex-column flex-md-row mt-5 min-vh-100">
+  <!-- Sidebar -->
+  <div class="sidebar-wrapper p-3" style="flex: 0 0 280px;">
+    <div class="profile-sidebar text-center rounded shadow-sm p-4">
+      <div class="profile-pic">
+        <img [src]="imagePath" alt="Profile Picture">
+        
+      </div>
+
+      <div class="profile-info mb-3">
+        <h2 class="h5">{{currentUser.prenom}} {{currentUser.nom}}</h2>
+        <p class="profile-role badge bg-success">Visiteur</p>
+        <p class="profile-location text-muted d-flex justify-content-center align-items-center gap-2">
+          <i class="bi bi-geo-alt"></i> {{currentUser.region}}, Tunisie
+        </p>
+      </div>
+
+      <div class="profile-stats d-flex justify-content-around mb-3">
+        <div class="text-center">
+          <span class="fw-bold fs-5 text-success">5</span><br>
+          <small class="text-muted text-uppercase">Réservations</small>
+        </div>
+        <div class="text-center">
+          <span class="fw-bold fs-5 text-success">3</span><br>
+          <small class="text-muted text-uppercase">Favoris</small>
+        </div>
+      </div>
+
+      <div class="profile-actions d-flex flex-column gap-2">
+        <button class="btn btn-action" routerLink="/profile/infoUser" routerLinkActive="active">
+          <i class="bi bi-person"></i> Information personnelle
+        </button>
+        <button class="btn btn-action" routerLink="/profile/reservations" routerLinkActive="active">
+          <i class="bi bi-calendar-check"></i> Mes Réservations
+        </button>
+        <button class="btn btn-action" routerLink="/profile/message" routerLinkActive="active">
+          <i class="bi bi-chat"></i> Contacter un agent
+        </button>
+        <button class="btn btn-logout">
+          <i class="bi bi-box-arrow-right"></i> Déconnexion
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="content-wrapper flex-fill p-4 bg-light">
+    <router-outlet></router-outlet>
+  </div>
+</div>

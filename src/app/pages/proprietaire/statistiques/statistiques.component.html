@@ -1,0 +1,230 @@
+<div class="dashboard-container" *ngIf="!isLoading; else loading">
+    <!-- Section des indicateurs clés -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="bi bi-house-door"></i>
+        </div>
+        <h3>Biens Immobiliers</h3>
+        <div class="stat-value">{{ totalBiens }}</div>
+        <div class="stat-trend positive">
+          <i class="bi bi-arrow-up"></i> Votre portfolio
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="bi bi-calendar-check"></i>
+        </div>
+        <h3>Réservations ce mois</h3>
+        <div class="stat-value">{{ reservationsMensuelles }}</div>
+        <div class="stat-trend positive" *ngIf="reservationsMensuelles > 0; else noReservations">
+          <i class="bi bi-arrow-up"></i> Réservations confirmées
+        </div>
+        <ng-template #noReservations>
+          <div class="stat-trend neutral">
+            <i class="bi bi-dash"></i> Aucune réservation
+          </div>
+        </ng-template>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="bi bi-people"></i>
+        </div>
+        <h3>Réservations Actives</h3>
+        <div class="stat-value">{{ reservationsActives }}</div>
+        <div class="stat-trend positive" *ngIf="reservationsActives > 0; else noActiveReservations">
+          <i class="bi bi-arrow-up"></i> En cours
+        </div>
+        <ng-template #noActiveReservations>
+          <div class="stat-trend neutral">
+            <i class="bi bi-dash"></i> Aucune réservation active
+          </div>
+        </ng-template>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="bi bi-speedometer2"></i>
+        </div>
+        <h3>Taux d'Occupation</h3>
+        <div class="stat-value">{{ tauxOccupation }}%</div>
+        <div class="stat-trend" [ngClass]="{
+          'positive': tauxOccupation > 50,
+          'neutral': tauxOccupation === 50,
+          'negative': tauxOccupation < 50
+        }">
+          <i class="bi" [ngClass]="{
+            'bi-arrow-up': tauxOccupation > 50,
+            'bi-dash': tauxOccupation === 50,
+            'bi-arrow-down': tauxOccupation < 50
+          }"></i> 
+          {{ tauxOccupation > 50 ? 'Élevé' : tauxOccupation === 50 ? 'Moyen' : 'Faible' }}
+        </div>
+      </div>
+    </div>
+  
+    <!-- Section des graphiques principaux -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3><i class="bi bi-bar-chart"></i> Revenu Mensuel</h3>
+          <div class="chart-period-selector">
+            <select [(ngModel)]="selectedPeriod" (change)="loadData()">
+              <option value="3m">3 derniers mois</option>
+              <option value="6m">6 derniers mois</option>
+              <option value="12m">12 derniers mois</option>
+            </select>
+          </div>
+        </div>
+        <div #revenueChart id="revenue-chart"></div>
+        <div class="chart-footer">
+          <div class="chart-legend">
+            <span class="legend-item"><i class="bi bi-square-fill" style="color: #36A2EB"></i> Revenu mensuel</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3><i class="bi bi-pie-chart"></i> Répartition des Biens</h3>
+        </div>
+        <div #propertyDistributionChart id="property-distribution-chart"></div>
+        <div class="chart-footer">
+          <div class="chart-legend">
+            <span *ngFor="let category of propertyCategories" class="legend-item">
+              <i class="bi bi-square-fill" [style.color]="getCategoryColor(category.category)"></i> {{ category.category }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Section secondaire -->
+    <div class="secondary-grid">
+      <div class="chart-card small-chart">
+        <div class="chart-header">
+          <h3><i class="bi bi-credit-card"></i> Abonnement</h3>
+        </div>
+        <div class="subscription-info">
+          <div class="subscription-detail">
+            <span class="detail-label">Type:</span>
+            <span class="detail-value">{{ subscriptionInfo.type }}</span>
+          </div>
+          <div class="subscription-detail">
+            <span class="detail-label">Statut:</span>
+            <span class="detail-value" [ngClass]="getSubscriptionStatusClass()">
+              {{ subscriptionInfo.status }}
+            </span>
+          </div>
+          <div class="subscription-detail">
+            <span class="detail-label">Début:</span>
+            <span class="detail-value">{{ subscriptionInfo.startDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="subscription-detail">
+            <span class="detail-label">Fin:</span>
+            <span class="detail-value">{{ subscriptionInfo.endDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+        <div #quotaGaugeChart id="quota-gauge-chart"></div>
+        <div class="chart-footer">
+          <p>{{ subscriptionInfo.annoncesRestantes }} annonces restantes sur {{ subscriptionInfo.annoncesAutorisees }}</p>
+        </div>
+      </div>
+      
+      <div class="chart-card small-chart">
+        <div class="chart-header">
+          <h3><i class="bi bi-trophy"></i> Top Annonces</h3>
+        </div>
+        <div class="top-properties-list">
+          <div *ngFor="let property of topProperties" class="property-item">
+            <div class="property-image-container" *ngIf="property.images && property.images.length">
+              <img [src]="property.images[0]" alt="{{property.title}}" class="property-image">
+              <div class="property-badge">
+                <i class="bi bi-eye"></i> {{property.views}}
+              </div>
+            </div>
+            <div class="property-info">
+              <h4 class="property-title">{{property.title}}</h4>
+              <div class="property-stats">
+                <span class="stat-item">
+                  <i class="bi bi-calendar-check"></i> {{property.reservations}} réservations
+                </span>
+                <span class="stat-item">
+                  <i class="bi bi-eye"></i> {{property.views}} vues
+                </span>
+              </div>
+              <div class="property-rating" *ngIf="property.rating">
+                <div class="rating-stars">
+                  <i class="bi" [ngClass]="star" *ngFor="let star of getRatingStars(property.rating)"></i>
+                </div>
+                <span class="rating-value">{{property.rating}}/5</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!topProperties.length" class="no-properties">
+            Aucune donnée disponible
+          </div>
+        </div>
+      </div>
+      
+      <div class="chart-card small-chart">
+        <div class="chart-header">
+          <h3><i class="bi bi-hourglass-top"></i> Réservations à venir</h3>
+        </div>
+        <div class="upcoming-reservations-list">
+          <div *ngFor="let res of upcomingReservations" class="reservation-item">
+            <div class="reservation-bien">{{ res.bienTitle }}</div>
+            <div class="reservation-client">Client: {{ res.clientName }}</div>
+            <div class="reservation-dates">
+              {{ res.dateDebut | date:'dd/MM/yyyy' }} - {{ res.dateFin | date:'dd/MM/yyyy' }}
+            </div>
+            <div class="reservation-days-left" [ngClass]="{
+              'warning': res.daysLeft <= 7,
+              'danger': res.daysLeft <= 3
+            }">
+              {{ res.daysLeft }} jours restants
+            </div>
+          </div>
+          <div *ngIf="upcomingReservations.length === 0" class="no-reservations">
+            Aucune réservation à venir
+          </div>
+        </div>
+      </div>
+
+      <!-- Nouvelle section Top Clients -->
+      <div class="chart-card small-chart">
+        <div class="chart-header">
+          <h3><i class="bi bi-people-fill"></i> Top Clients</h3>
+        </div>
+        <div class="top-clients-list">
+          <div *ngFor="let client of topClients" class="client-item">
+            <div class="client-avatar" [style.background-color]="client.avatarColor">
+              {{ client.initials }}
+            </div>
+            <div class="client-info">
+              <h4 class="client-name">{{ client.name }}</h4>
+              <div class="client-stats">
+                <span class="stat-item">
+                  <i class="bi bi-calendar-check"></i> {{ client.reservations }} réservations
+                </span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!topClients.length" class="no-clients">
+            Aucun client fréquent
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #loading>
+    <div class="loading-overlay">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Chargement des données...</p>
+    </div>
+  </ng-template>

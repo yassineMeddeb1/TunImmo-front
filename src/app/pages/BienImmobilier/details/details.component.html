@@ -1,0 +1,319 @@
+<app-navbar></app-navbar>
+<div class="container-fluid details-container">
+  <div class="row">
+    <!-- Section principale -->
+    <div class="col-lg-8 col-md-12">
+      <!-- En-tête -->
+      <div class="bien-header mb-4">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h1 class="mb-1">{{ bien.titre }}</h1>
+            <div class="d-flex align-items-center">
+              <span class="badge bg-primary me-2">{{ bien.categorie?.nom }}</span>
+              <span class="text-muted">
+                <i class="bi bi-geo-alt-fill"></i> {{ bien.adresse }}, {{ bien.commune?.nom }}
+              </span>
+            </div>
+          </div>
+          <div class="text-end">
+            <div class="price-display">
+              <span class="price">{{ bien.prix | currency:'TND':'symbol':'1.0-0' }}</span>
+              <span class="price-label">{{ bien.typeTransaction === 'LOCATION' ? '/mois' : '' }}</span>
+            </div>
+            <div class="availability-badge">
+              <span class="badge" [ngClass]="bien.disponible ? 'bg-success' : 'bg-danger'">
+                {{ bien.disponible ? 'Disponible' : 'Non disponible' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Galerie d'images -->
+      <div class="gallery-section mb-5">
+        <div class="main-image-container position-relative">
+          <img [src]="imagePrincipale" class="main-image img-fluid rounded-3" alt="Image principale">
+          <div class="image-actions">
+            <button class="btn btn-light btn-sm rounded-circle me-2" (click)="ajouterAuxFavoris()">
+              <i class="bi {{ isFavoris() ? 'bi-heart-fill text-danger' : 'bi-heart' }}"></i>
+            </button>
+            <span class="badge bg-dark bg-opacity-75">
+              <i class="bi bi-images me-1"></i> {{ imagePrincipaleIndex + 1 }}/{{ imageUrls.length }}
+            </span>
+          </div>
+          <button class="nav-arrow left" (click)="changerImagePrincipale(imagePrincipaleIndex - 1)">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <button class="nav-arrow right" (click)="changerImagePrincipale(imagePrincipaleIndex + 1)">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+
+        <div class="thumbnail-container mt-3">
+          <div class="thumbnails">
+            <div *ngFor="let img of imageUrls; let i = index" 
+                 class="thumbnail-item" 
+                 [class.active]="i === imagePrincipaleIndex"
+                 (click)="changerImagePrincipale(i)">
+              <img [src]="img" class="thumbnail-img" alt="Miniature">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="description-section mb-5">
+        <h3 class="section-title">Description</h3>
+        <p class="description-text">{{ bien.description }}</p>
+      </div>
+
+      <!-- Caractéristiques principales -->
+      <div class="features-section mb-5">
+        <h3 class="section-title">Caractéristiques principales</h3>
+        <div class="features-grid">
+          <div class="feature-item" *ngIf="bien.surface">
+            <i class="bi bi-arrows-fullscreen feature-icon"></i>
+            <div>
+              <span class="feature-value">{{ bien.surface }} m²</span>
+              <span class="feature-label">Surface</span>
+            </div>
+          </div>
+
+          <div class="feature-item" *ngIf="bien.nombresPieces">
+            <i class="bi bi-door-open feature-icon"></i>
+            <div>
+              <span class="feature-value">{{ bien.nombresPieces }}</span>
+              <span class="feature-label">Pièces</span>
+            </div>
+          </div>
+
+          <div class="feature-item" *ngIf="bien.nombresChambres">
+            <i class="bi bi-lamp feature-icon"></i>
+            <div>
+              <span class="feature-value">{{ bien.nombresChambres }}</span>
+              <span class="feature-label">Chambres</span>
+            </div>
+          </div>
+
+          <div class="feature-item" *ngIf="bien.nombresSalledebain">
+            <i class="bi bi-bathtub feature-icon"></i>
+            <div>
+              <span class="feature-value">{{ bien.nombresSalledebain }}</span>
+              <span class="feature-label">Salles de bain</span>
+            </div>
+          </div>
+
+          <!-- Caractéristiques spécifiques au type de bien -->
+          <ng-container *ngIf="bien.categorie?.nom === 'APPARTEMENT'">
+            <div class="feature-item" *ngIf="bien.nombresEtages">
+              <i class="bi bi-building feature-icon"></i>
+              <div>
+                <span class="feature-value">{{ bien.nombresEtages }}</span>
+                <span class="feature-label">Étages</span>
+              </div>
+            </div>
+
+            <div class="feature-item" *ngIf="bien.ascenseur">
+              <i class="bi bi-arrow-up-circle feature-icon"></i>
+              <div>
+                <span class="feature-value">Oui</span>
+                <span class="feature-label">Ascenseur</span>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="bien.categorie?.nom === 'MAISON'">
+            <div class="feature-item" *ngIf="bien.superficie">
+              <i class="bi bi-tree feature-icon"></i>
+              <div>
+                <span class="feature-value">{{ bien.superficie }} m²</span>
+                <span class="feature-label">Terrain</span>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="bien.categorie?.nom === 'TERRAIN'">
+            <div class="feature-item" *ngIf="bien.superficie">
+              <i class="bi bi-pin-map feature-icon"></i>
+              <div>
+                <span class="feature-value">{{ bien.superficie }} m²</span>
+                <span class="feature-label">Superficie</span>
+              </div>
+            </div>
+
+            <div class="feature-item" *ngIf="bien.constructible !== undefined">
+              <i class="bi bi-check-circle feature-icon"></i>
+              <div>
+                <span class="feature-value">{{ bien.constructible ? 'Oui' : 'Non' }}</span>
+                <span class="feature-label">Constructible</span>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Équipements et services -->
+      <div class="amenities-section mb-5" *ngIf="shouldShowAmenities()">
+        <h3 class="section-title">Équipements et services</h3>
+        <div class="amenities-grid">
+          <div class="amenity-item" *ngIf="bien.climatiseur">
+            <i class="bi bi-snow text-primary"></i>
+            <span>Climatisation</span>
+          </div>
+          <div class="amenity-item" *ngIf="bien.jardin">
+            <i class="bi bi-tree text-primary"></i>
+            <span>Jardin</span>
+          </div>
+          <div class="amenity-item" *ngIf="bien.garage">
+            <i class="bi bi-car-front text-primary"></i>
+            <span>Garage</span>
+          </div>
+          <div class="amenity-item" *ngIf="bien.piscine">
+            <i class="bi bi-water text-primary"></i>
+            <span>Piscine</span>
+          </div>
+          <div class="amenity-item" *ngIf="bien.balcon">
+            <i class="bi bi-house-door text-primary"></i>
+            <span>Balcon</span>
+          </div>
+          <div class="amenity-item" *ngIf="bien.vueSurMer">
+            <i class="bi bi-eye text-primary"></i>
+            <span>Vue sur mer</span>
+          </div>
+          <div class="amenity-item" *ngIf="bien.wifi">
+            <i class="bi bi-wifi text-primary"></i>
+            <span>Wi-Fi</span>
+          </div>
+          <div class="amenity-item" *ngIf="bien.meuble">
+            <i class="bi bi-box-seam text-primary"></i>
+            <span>Meublé</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Localisation -->
+      <div class="location-section mb-5">
+        <h3 class="section-title">Localisation</h3>
+        <div class="map-container rounded-3 overflow-hidden">
+          <iframe width="100%" height="400" frameborder="0" style="border:0" [src]="safeMapUrl" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <!-- Avis -->
+      <div class="reviews-section">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="section-title mb-0">Avis</h3>
+          <div class="average-rating">
+            <div class="stars">
+              <i *ngFor="let star of [1,2,3,4,5]" 
+                 class="bi {{ star <= averageRating ? 'bi-star-fill' : (star - 0.5 <= averageRating ? 'bi-star-half' : 'bi-star') }} text-warning"></i>
+            </div>
+            <span class="ms-2">{{ averageRating | number:'1.1-1' }} ({{ avis.length }} avis)</span>
+          </div>
+        </div>
+
+        <!-- Liste des avis -->
+        <div class="reviews-list">
+          <div *ngFor="let avis of avis" class="review-card p-4 mb-3 rounded-3">
+            <div class="review-header d-flex justify-content-between mb-3">
+              <div>
+                <h5 class="mb-1">{{ avis.clientNom }} {{ avis.clientPrenom }}</h5>
+                <div class="stars small">
+                  <i *ngFor="let star of [1,2,3,4,5]" 
+                     class="bi {{ star <= avis.note ? 'bi-star-fill' : 'bi-star' }} text-warning"></i>
+                </div>
+              </div>
+              <span class="text-muted">{{ avis.date | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <p class="mb-0">{{ avis.commentaire }}</p>
+          </div>
+        </div>
+
+        <!-- Formulaire d'avis -->
+        <div *ngIf="currentUser" class="add-review mt-5 p-4 rounded-3">
+          <h4 class="mb-3">Ajouter un avis</h4>
+          <form (ngSubmit)="submitAvis()" #avisForm="ngForm">
+            <div class="mb-3">
+              <label class="form-label">Votre note</label>
+              <div class="rating-input">
+                <i *ngFor="let star of [1,2,3,4,5]" 
+                   class="bi {{ star <= newRating ? 'bi-star-fill' : 'bi-star' }} star-selector"
+                   (click)="newRating = star"></i>
+              </div>
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" [(ngModel)]="newComment" 
+                        name="comment" rows="3" placeholder="Votre expérience avec ce bien..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!avisForm.form.valid || newRating === 0">
+              <i class="bi bi-send me-2"></i> Publier l'avis
+            </button>
+          </form>
+        </div>
+
+        <div *ngIf="!currentUser" class="alert alert-info mt-4">
+          <i class="bi bi-info-circle me-2"></i>
+          <a routerLink="/login" class="alert-link">Connectez-vous</a> pour laisser un avis.
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar - Contact -->
+    <div class="col-lg-4 col-md-12">
+      <div class="contact-card p-4 rounded-3 sticky-top">
+        <div class="d-flex align-items-center mb-4">
+          <img [src]="imagePath" class="profile-img rounded-circle me-3" alt="Propriétaire">
+          <div>
+            <h4 class="mb-0">{{ bien.proprietaire?.nom }} {{ bien.proprietaire?.prenom }}</h4>
+            <small class="text-muted">Propriétaire</small>
+          </div>
+        </div>
+
+        <div class="contact-info mb-4">
+          <div class="contact-item mb-3">
+            <i class="bi bi-telephone me-2"></i>
+            <a href="tel:{{bien.proprietaire?.telephone}}" class="text-decoration-none">{{ bien.proprietaire?.telephone }}</a>
+          </div>
+          <div class="contact-item">
+            <i class="bi bi-envelope me-2"></i>
+            <a href="mailto:{{bien.proprietaire?.email}}" class="text-decoration-none">{{ bien.proprietaire?.email }}</a>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" (click)="openChat()">
+            <i class="bi bi-chat-left-text me-2"></i> Envoyer un message
+          </button>
+          <a [routerLink]="['/reservation', bien.id]" class="btn btn-success">
+            <i class="bi bi-calendar-check me-2"></i> Réserver une visite
+          </a>
+        </div>
+
+        <!-- Chat (masqué par défaut) -->
+        <div class="chat-container mt-4" *ngIf="showChat">
+          <div class="chat-header d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Discussion</h5>
+            <button class="btn btn-sm btn-outline-secondary" (click)="showChat = false">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+          <div class="chat-messages">
+            <div *ngFor="let msg of messages" class="message" [class.sent]="msg.senderId == currentUser?.id">
+              <div class="message-content">{{ msg.content}}</div>
+              <div class="message-time">{{ msg.timestamp | date:'HH:mm' }}</div>
+            </div>
+          </div>
+          <div class="chat-input">
+            <input type="text" [(ngModel)]="newMessage" placeholder="Écrivez votre message..." 
+                   class="form-control" (keyup.enter)="envoyerMessage()">
+            <button class="btn btn-primary" (click)="envoyerMessage()">
+              <i class="bi bi-send"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-why-choose-us></app-why-choose-us>
+<app-footer></app-footer>

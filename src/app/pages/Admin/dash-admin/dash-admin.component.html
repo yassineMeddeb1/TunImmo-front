@@ -1,0 +1,57 @@
+<app-navbar></app-navbar>
+<div class="dashboard-container row col-12">
+  <!-- Bouton de menu pour les écrans md et sm -->
+  <button class="menu-toggle-btn d-xl-none" (click)="toggleSidebar()">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <div class="col-xl-2">
+    <div class="sidebar" [ngClass]="{ 'sidebar-collapsed': isCollapsed, 'sidebar-visible': isSidebarVisible }">
+      <div class="sidebar-header">
+        <h3 *ngIf="!isCollapsed">Tableau de bord</h3>
+        <button class="toggle-btn" (click)="toggleSidebar()">
+          <i class="bi" [ngClass]="isCollapsed ? 'bi-arrow-right' : 'bi-arrow-left'"></i>
+        </button>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li>
+          <a routerLink="/admin/statistiques-admin" routerLinkActive="active">
+            <i class="bi bi-bar-chart"></i>
+            <span *ngIf="!isCollapsed">Statistiques</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/utilisateurs" routerLinkActive="active">
+            <i class="bi bi-credit-card"></i>
+            <span *ngIf="!isCollapsed">Gestion des Utilisateurs</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/paiements-admin" routerLinkActive="active">
+            <i class="bi bi-credit-card"></i>
+            <span *ngIf="!isCollapsed">Gestion des Paiements</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/gestion-annonces" routerLinkActive="active">
+            <i class="bi bi-house-door"></i>
+            <span *ngIf="!isCollapsed">Modérer les Annonces</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/profile" routerLinkActive="active">
+            <i class="bi bi-person"></i>
+            <span *ngIf="!isCollapsed">Profil</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Contenu dynamique -->
+  <div class="content col-xl-8" [ngClass]="{ 'content-expanded': isCollapsed }">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<section class="hero" [ngStyle]="{ 'background-image': 'url(' + currentImage + ')' }">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="fw-bold display-4">Bienvenue sur TunImmobilier</h1>
+    <p class="lead fs-5">Recherchez, louez ou achetez facilement votre bien immobilier.</p>
+    <button class="btn btn-primary btn-lg mt-3" [routerLink]="['/accueil']" fragment="annonces">
+      Voir les annonces
+    </button>
+  </div>
+</section>

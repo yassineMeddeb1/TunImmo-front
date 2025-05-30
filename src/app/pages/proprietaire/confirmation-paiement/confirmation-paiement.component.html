@@ -1,0 +1,40 @@
+<div class="confirmation-container">
+    <div class="confirmation-card">
+      <div class="confirmation-icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+      <h2>Paiement Réussi !</h2>
+      
+      <div class="confirmation-details">
+        <div class="detail-item">
+          <span>Abonnement :</span>
+          <strong>{{ abonnement?.type }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Montant :</span>
+          <strong>{{ abonnement?.prix }} TND</strong>
+        </div>
+        <div *ngIf="reference" class="detail-item">
+          <span>Référence :</span>
+          <strong>{{ abonnement?.reference }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Date :</span>
+          <strong>{{ today | date:'dd/MM/yyyy à HH:mm' }}</strong>
+        </div>
+      </div>
+      
+      <p class="confirmation-message">
+        Votre abonnement a été activé avec succès. Un email de confirmation vous a été envoyé.
+      </p>
+      
+      <div class="confirmation-actions">
+        <button class="btn-dashboard" routerLink="/proprietaire/abonnement">
+          <i class="bi bi-house"></i> Mon abonnement
+        </button>
+        <button class="btn-receipt" (click)="telechargerRecu()">
+          <i class="bi bi-receipt"></i> Télécharger le reçu
+        </button>
+      </div>
+    </div>
+  </div>

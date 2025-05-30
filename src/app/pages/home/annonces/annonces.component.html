@@ -1,0 +1,291 @@
+<section class="search-bar p-4 rounded shadow-sm mb-5">
+  <div class="container-fluid">
+    <div class="row g-2">
+
+      <div class="col-md-2 col-sm-12 col-12">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-building"></i></span>
+          <select class="form-select" [(ngModel)]="selectedCategory" (change)="applyFilters()">
+            <option value="">Catégorie</option>
+            <option value="MAISON">Maison</option>
+            <option value="APPARTEMENT">Appartement</option>
+            <option value="TERRAIN">Terrain</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-12 col-12">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="text" class="form-control" placeholder="Mot-clé..." [(ngModel)]="keyword" (input)="applyFilters()">
+        </div>
+      </div>
+
+      <div class="col-md-2 col-12">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-building"></i></span>
+          <select class="form-select" [(ngModel)]="typeTransaction" (change)="applyFilters()" >
+            <option value="" >Operation</option>
+            <option value="LOCATION">Pour Louer</option>
+            <option value="VENTE">Pour Acheter</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="col-md-2 col-sm-12 col-12">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+          <select class="form-select" [(ngModel)]="selectedGouvernoratId" (change)="onGouvernoratChange()">
+            <option value="" disabled hidden> gouvernorat</option>
+            <option *ngFor="let gov of gouvernorats" [value]="gov.id">{{ gov.nom }}</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="col-md-3 col-sm-12 col-12" *ngIf="EstSelectGover">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+          <select class="form-select" [(ngModel)]="selectedComId" (change)="applyFilters()">
+            <option value="" disabled hidden> commune</option>
+            <option *ngFor="let commune of communes" [value]="commune.id">{{ commune.nom }}</option>
+          </select>
+        </div>
+      </div>
+      
+      
+
+      <div class="col-md-3 col-15 text-center align-items-center">
+        <button class="btn btn-outline-secondary" (click)="toggleFilters()">
+          <i class="bi bi-funnel"></i> Filtrage Avancé
+        </button>
+      </div>
+    </div>
+
+    <div class="advanced-filters mt-3 p-3 rounded shadow-sm" [ngClass]="{'show-filters': showAdvancedFilters}">
+      <h5>Filtres avancés pour <strong>{{ selectedCategory | titlecase }}</strong></h5>
+      <div class="row g-2">
+        <div class="col-md-4">
+          <h6>Prix max (TND)</h6>
+          <input type="range" class="form-range" [(ngModel)]="selectedFilters.prixMax" min="0" max="1000000" step="10000" (change)="applyFilters()">
+          <span>{{ selectedFilters.prixMax }} TND</span>
+        </div>
+        <div class="col-md-4">
+          <h6>Surface min (m²)</h6>
+          <input type="range" class="form-range" [(ngModel)]="selectedFilters.surfaceMin" min="0" max="1000" step="50" (change)="applyFilters()">
+          <span>{{ selectedFilters.surfaceMin }} m²</span>
+        </div>
+
+        <div *ngIf="selectedCategory === 'MAISON'" class="row">
+          <div class="col-md-4">
+            <h6>Nombre de pièces</h6>
+            <select class="form-select" [(ngModel)]="selectedFilters.pieces" (change)="applyFilters()">
+              <option *ngFor="let option of nombrePieces" [value]="option">{{ option }}+</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <h6>Nombre de chambres</h6>
+            <select class="form-select" [(ngModel)]="selectedFilters.chambres" (change)="applyFilters()">
+              <option *ngFor="let option of nombreChambres" [value]="option">{{ option }}+</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <h6>Nombre de salles de bain</h6>
+            <select class="form-select" [(ngModel)]="selectedFilters.sallesDeBain" (change)="applyFilters()">
+              <option *ngFor="let option of nombreSallesDeBain" [value]="option">{{ option }}+</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="selectedCategory === 'APPARTEMENT'" class="row">
+          <div class="col-md-4">
+            <h6>Nombre d’étages</h6>
+            <select class="form-select" [(ngModel)]="selectedFilters.etages" (change)="applyFilters()">
+              <option *ngFor="let e of etages" [value]="e">{{ e }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="selectedCategory === 'TERRAIN'" class="row">
+          <div class="col-md-4">
+            <h6>Surface du terrain (m²)</h6>
+            <input type="range" class="form-range" [(ngModel)]="selectedFilters.surface" min="100" max="1000" step="50" (change)="applyFilters()">
+            <span>{{ selectedFilters.surface }} m²</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section #resultsSection class="container-fluid my-5" *ngIf="EstAfficher">
+  
+  <h4 class="text-center mb-4 text-dark">Résultat de recherche 
+    <span *ngIf="selectedCityName">Annonces à {{ selectedCityName }}</span>
+  </h4>
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let annonce of paginatedAnnonces">
+      <div class="card property-card h-100" (click)="navigateToDetails(annonce.id!)">
+        <!-- En-tête de la carte -->
+        <div class="card-header position-relative p-0 border-0">
+          <!-- Badge Disponible/Non disponible -->
+          <div class="position-absolute top-0 end-0 m-2" style="z-index: 3;">
+            <span class="badge bg-{{ annonce.disponible ? 'success' : 'danger' }}">
+              {{ annonce.disponible ? 'Disponible' : 'Non Disponible' }}
+            </span>
+          </div>
+        
+          <!-- Icône Favoris -->
+          <div class="position-absolute top-0 start-0 m-2" style="z-index: 4;">
+            <i class="bi bi-heart{{ isFavoris(annonce) ? '-fill' : '' }} text-danger fs-4"
+               (click)="toggleFavoris(annonce);$event.stopPropagation()"></i>
+          </div>
+        
+          <!-- Image avec indicateur de galerie -->
+          <div class="property-image-container">
+            <img [src]="annonce.imageUrls?.[0] || 'assets/default-property.jpg'" 
+                 class="card-img-top" alt="Image du bien">
+            <div class="image-count-badge" *ngIf="annonce.imageUrls && annonce.imageUrls.length > 0">
+              <i class="bi bi-images me-1"></i>{{ annonce.imageUrls.length }}
+            </div>
+          </div>
+        </div>
+        
+    
+        <!-- Corps de la carte -->
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="card-title text-dark mb-1">{{ annonce.titre | titlecase }}</h5>
+            <span class="badge bg-light text-dark">
+              <i class="bi {{ getCategoryIcon(annonce.categorie?.nom || '') }} me-1"></i>
+              {{ annonce.categorie?.nom | titlecase }}
+            </span>
+          </div>
+          
+          <!-- Localisation -->
+          <div class="d-flex align-items-center mb-2 text-muted">
+            <i class="bi bi-geo-alt-fill me-2"></i>
+            <small>{{ annonce.adresse }}, {{ annonce.commune?.nom }}</small>
+          </div>
+          
+          <!-- Caractéristiques principales -->
+          <div class="property-features mb-3">
+            <div class="feature-item" *ngIf="annonce.surface">
+              <i class="bi bi-arrows-fullscreen"></i>
+              <span>{{ annonce.surface }} m²</span>
+            </div>
+            <div class="feature-item" *ngIf="annonce.nombresPieces">
+              <i class="bi bi-door-open"></i>
+              <span>{{ annonce.nombresPieces }} pièce(s)</span>
+            </div>
+            <div class="feature-item" *ngIf="annonce.nombresChambres">
+              <i class="bi bi-lamp"></i>
+              <span>{{ annonce.nombresChambres }} chambre(s)</span>
+            </div>
+            <div class="feature-item" *ngIf="annonce.nombresSalledebain">
+              <i class="bi bi-bathtub"></i>
+              <span>{{ annonce.nombresSalledebain }} salle(s) de bain</span>
+            </div>
+          </div>
+          
+          <!-- Équipements -->
+          <div class="equipments mb-3" *ngIf="annonce.jardin || annonce.garage || annonce.piscine || annonce.climatiseur">
+            <span class="badge bg-light text-dark me-1" *ngIf="annonce.jardin">
+              <i class="bi bi-tree me-1"></i>Jardin
+            </span>
+            <span class="badge bg-light text-dark me-1" *ngIf="annonce.garage">
+              <i class="bi bi-car-front me-1"></i>Garage
+            </span>
+            <span class="badge bg-light text-dark me-1" *ngIf="annonce.piscine">
+              <i class="bi bi-water me-1"></i>Piscine
+            </span>
+            <span class="badge bg-light text-dark me-1" *ngIf="annonce.climatiseur">
+              <i class="bi bi-snow me-1"></i>Climatiseur
+            </span>
+          </div>
+          
+          <!-- Prix et type de transaction -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <span class="text-primary fw-bold fs-5">{{ annonce.prix | number }} TND</span>
+              <span class="d-block text-muted small">
+                <i class="bi {{ getTransactionIcon(annonce.typeTransaction) }} me-1"></i>
+                {{ annonce.typeTransaction === 'LOCATION' ? 'Par mois' : 'À vendre' }}
+                <span *ngIf="annonce.typeLocation">({{ annonce.typeLocation }})</span>
+              </span>
+            </div>
+            <div class="text-end" *ngIf="annonce.dateAjout">
+              <span class="text-muted small">Publié le</span>
+              <span class="d-block">{{ annonce.dateAjout | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Pied de carte -->
+        <div class="card-footer bg-transparent border-top-0 pt-0">
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-outline-primary" (click)="reserver(annonce);$event.stopPropagation()">
+              <i class="bi bi-calendar-check me-1"></i> Visite
+            </button>
+            <button class="btn btn-primary" (click)="contactProprietaire(annonce);$event.stopPropagation()">
+              <i class="bi bi-telephone me-1"></i> Contact
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-center mt-4">
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" [ngClass]="{ disabled: currentPage === 1 }">
+          <a class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item" *ngFor="let page of pageNumbers" [ngClass]="{ active: page === currentPage }">
+          <a class="page-link"  (click)="changePage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [ngClass]="{ disabled: currentPage === totalPages }">
+          <a class="page-link"  (click)="changePage(currentPage + 1)" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</section>
+<app-search-bar></app-search-bar>
+<app-search-country></app-search-country>
+<section class="container-fluid mb-2 pb-md-4 px-3 ms-4">
+  <div class="d-flex align-items-center justify-content-between mb-2">
+    <h4 class="h3 mb-0 ms-5">Services</h4>
+    <a class="btn btn-link fw-normal p-0" routerLink="/catalog/rent">
+      View all <i class="fi-arrow-long-right ms-2"></i>
+    </a>
+  </div>
+  <ngx-slick-carousel [config]="service" class="carousel">
+    <div ngxSlickItem *ngFor="let data of servicesData; let i = index">
+      <div class="col">
+        <div class="card card-services card-hover border-0 pb-2 pb-sm-3 px-sm-3 text-center">
+          <img class="d-block mx-auto my-3" [src]="data.image" alt="Illustration">
+          <div class="card-body">
+            <h2 class="h4 card-title">{{ data.title }}</h2>
+            <p class="card-text fs-sm">{{ data.content }}</p>
+          </div>
+          <div class="card-footer pt-0 border-0">
+            <button class="btn btn-outline-primary stretched-link" 
+                    (click)="selectService(i)">
+              {{ data.btn }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ngx-slick-carousel>
+</section>
+
+
+
+
+
+<!-- Liste des annonces -->

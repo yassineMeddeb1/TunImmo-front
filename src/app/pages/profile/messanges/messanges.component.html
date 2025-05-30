@@ -1,0 +1,73 @@
+<div class="messages-container container-fluid">
+  <div class="row h-100">
+    <!-- Liste des contacts -->
+    <div class="col-lg-3 col-md-4 contacts-list">
+      <div *ngFor="let contact of contacts"
+           class="contact-item"
+           [class.active]="contact === selectedContact"
+           (click)="selectContact(contact)">
+
+        <img *ngIf="contact.imageUrl; else defaultAvatar"
+             [src]="contact.imageUrl"
+             alt="Avatar"
+             class="contact-avatar">
+
+        <ng-template #defaultAvatar>
+          <img src="assets/images/default-avatar.jpg" alt="Avatar" class="contact-avatar">
+        </ng-template>
+
+        <div class="contact-info">
+          <h3>{{ contact.contactName }}</h3>
+          <p class="last-message">{{ contact.lastMessage | truncate:30 }}</p>
+          <small class="last-time">{{ contact.lastMessageTime }}</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boîte de discussion -->
+    <div class="col-lg-9 col-md-8 chat-box" *ngIf="selectedContact">
+      <div class="chat-header">
+        <img *ngIf="selectedContact.imageUrl; else defaultChatAvatar"
+             [src]="selectedContact.imageUrl "
+             alt="Avatar" class="chat-avatar">
+        <ng-template #defaultChatAvatar>
+          <img src="assets/images/default-avatar.jpg" alt="Avatar" class="chat-avatar">
+        </ng-template>
+        <h3>{{ selectedContact.contactName }}</h3>
+        <span class="status-indicator" [class.online]="connectionStatus"></span>
+      </div>
+
+      <div class="chat-messages">
+        <div *ngFor="let message of messages"
+             class="message"
+             [ngClass]="{'sent': message.senderId === currentUser.id, 'received': message.senderId !== currentUser.id}">
+          <p>{{ message.content }}</p>
+          <small>{{ message.timestamp | date:'shortTime' }}</small>
+        </div>
+      </div>
+
+      <!-- Zone de saisie du message -->
+      <div class="chat-input">
+        <input type="text"
+               [(ngModel)]="messageContent"
+               placeholder="Tapez votre message..."
+               
+               (keyup.enter)="sendMessage()">
+
+        <button (click)="sendMessage()"
+                >
+          Envoyer
+        </button>
+      </div>
+    </div>
+
+    <!-- Aucun contact sélectionné -->
+    <div class="col-lg-9 col-md-8 no-contact-selected" *ngIf="!selectedContact">
+      <div class="empty-state">
+        <img src="assets/images/chat-icon.png" alt="Chat">
+        <h3>Bienvenue dans votre messagerie</h3>
+        <p>Sélectionnez un contact pour commencer une discussion</p>
+      </div>
+    </div>
+  </div>
+</div>

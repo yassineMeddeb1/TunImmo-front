@@ -1,0 +1,128 @@
+<div class="abonnement-container">
+  <div class="header-section">
+    <h2><i class="bi bi-credit-card-2-front"></i> Gestion d'abonnement</h2>
+    <p class="subtitle">Choisissez le forfait qui correspond à vos besoins</p>
+  </div>
+
+  <!-- Section État Actuel -->
+  <div class="status-section">
+    <div *ngIf="abonnementActuel; else noAbonnement" class="abonnement-actuel">
+      <div class="section-header">
+        <h3><i class="bi bi-info-circle"></i> Votre abonnement actuel</h3>
+        <span class="badge" [ngClass]="{
+          'badge-free': abonnementActuel.type === 'Gratuit',
+          'badge-active': abonnementActuel.type !== 'Gratuit'
+        }">
+          {{ abonnementActuel.type !== 'Gratuit' ? 'Actif' : 'Gratuit' }}
+        </span>
+      </div>
+      <div class="abonnement-card">
+        <div class="abonnement-icon">
+          <i class="bi" [ngClass]="getIconForAbonnement(abonnementActuel.type)"></i>
+        </div>
+        <div class="abonnement-details">
+          <p><strong>Type :</strong> {{ abonnementActuel.type }}</p>
+          <p><strong>Annonces :</strong> 
+            <span [ngClass]="{
+              'unlimited': abonnementActuel.annoncesRestantes === -1
+            }">
+              {{ abonnementActuel.annoncesRestantes === -1 ? 'Illimitées' : abonnementActuel.annoncesRestantes }}
+            </span>
+          </p>
+          <p><strong>Expiration :</strong> {{ abonnementActuel.dateFin| date:'dd/MM/yyyy' }}</p>
+          <p><strong>Prix :</strong> {{ abonnementActuel.prix }} TND 
+            <span *ngIf="abonnementActuel.type === 'Gratuit'">/ mois</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noAbonnement>
+      <div class="no-abonnement">
+        <div class="alert alert-info">
+          <i class="bi bi-info-circle-fill"></i>
+          <div>
+            <h4>Aucun abonnement actif</h4>
+            <p>Choisissez un abonnement pour publier des annonces</p>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Section Résumé avant paiement -->
+  <div *ngIf="abonnementSelectionne" class="resume-section">
+    <h3><i class="bi bi-receipt"></i> Récapitulatif de votre choix</h3>
+    <div class="resume-card">
+      <div class="resume-icon">
+        <i class="bi" [ngClass]="getIconForAbonnement(abonnementSelectionne.type)"></i>
+      </div>
+      <div class="resume-details">
+        <h4>{{ abonnementSelectionne.type }}</h4>
+        <p class="price">{{ abonnementSelectionne.prix }} TND 
+          <span>/ mois</span>
+        </p>
+        <ul>
+          <li>
+            <i class="bi bi-check-circle"></i>
+            {{ abonnementSelectionne.annoncesRestantes === -1 ? 'Annonces illimitées' : abonnementSelectionne.annoncesRestantes + ' annonces' }}
+          </li>
+          <li>
+            <i class="bi bi-check-circle"></i>
+            Accès à toutes les fonctionnalités
+          </li>
+          <li>
+            <i class="bi bi-check-circle"></i>
+            Support technique 24/7
+          </li>
+        </ul>
+      </div>
+    </div>
+    <button class="btn btn-continue" (click)="goToPayment()">
+      <i class="bi bi-arrow-right"></i> Continuer vers le paiement
+    </button>
+  </div>
+
+  <!-- Section Options d'Abonnement -->
+  <div class="options-section">
+    <h3><i class="bi bi-gem"></i> Nos offres d'abonnement</h3>
+    <p class="section-description">Choisissez le forfait qui correspond à vos besoins</p>
+    
+    <div class="abonnement-options">
+      <div *ngFor="let abonnement of abonnementsDisponibles" 
+           class="abonnement-option" 
+           [ngClass]="{ 
+             'selected': abonnement.type === abonnementActuel?.type,
+             'popular': abonnement.type === 'Premium'
+           }">
+        <div class="abonnement-header">
+          <div class="abonnement-icon">
+            <i class="bi" [ngClass]="getIconForAbonnement(abonnement.type)"></i>
+          </div>
+          <h4>{{ abonnement.type }}</h4>
+          <div *ngIf="abonnement.type === 'Premium'" class="popular-badge">
+            <i class="bi bi-star-fill"></i> Populaire
+          </div>
+        </div>
+        
+        <div class="abonnement-body">
+          <p class="price">{{ abonnement.prix }} TND <span>/mois</span></p>
+          <ul class="features-list">
+            <li>
+              <i class="bi bi-check"></i>
+              {{ abonnement.annoncesRestantes === -1 ? 'Annonces illimitées' : abonnement.annoncesRestantes + ' annonces' }}
+            </li>
+            <li><i class="bi bi-check"></i> Statistiques avancées</li>
+            <li><i class="bi bi-check"></i> Support prioritaire</li>
+          </ul>
+        </div>
+        
+        <button class="btn" 
+                (click)="choisirAbonnement(abonnement)"
+                [disabled]="abonnement.type === abonnementActuel?.type">
+          {{ abonnement.type === abonnementActuel?.type ? 'Actif' : 'Choisir' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

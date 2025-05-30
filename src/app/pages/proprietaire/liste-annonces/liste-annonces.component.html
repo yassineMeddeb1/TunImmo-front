@@ -1,0 +1,180 @@
+<div class="annonces-container">
+  <div class="annonces-header">
+    <h2>Mes Annonces</h2>
+    <div class="header-actions">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Rechercher une annonce..." [(ngModel)]="searchTerm" (input)="applyFilters()">
+      </div>
+      <button class="btn btn-primary" (click)="publierAnnonce()">
+        <i class="bi bi-plus-circle"></i> Publier une annonce
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtres et Statistiques -->
+  <div class="annonces-controls">
+    <div class="filters-container">
+      <div class="filtres">
+        <button *ngFor="let filtre of filtres" 
+                [class.active]="filtreActif === filtre.value"
+                (click)="changerFiltre(filtre.value)">
+          {{ filtre.label }}
+          <span class="badge">{{ getAnnonceCount(filtre.value) }}</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-value">{{ annonces.length }}</div>
+        <div class="stat-label">Total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ getAnnonceCount('disponible') }}</div>
+        <div class="stat-label">Disponibles</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ getAnnonceCount('LOCATION') }}</div>
+        <div class="stat-label">À louer</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ getAnnonceCount('VENTE') }}</div>
+        <div class="stat-label">À vendre</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Liste des Annonces -->
+  <div class="annonces-grid" *ngIf="annoncesFiltrees.length > 0; else noAnnonces">
+    <div class="annonce-card" *ngFor="let annonce of paginatedAnnonces">
+      <div class="card-image">
+        <img [src]="annonce.imageUrls?.[0] || 'assets/default-property.jpg'" 
+             alt="Image de l'annonce" 
+             (error)="handleImageError($event)"
+             loading="lazy">
+        <div class="image-badges">
+          <span class="image-badge" [ngClass]="annonce.disponible ? 'disponible' : 'non-disponible'">
+            {{ annonce.disponible ? 'Disponible' : 'Non disponible' }}
+          </span>
+          <span class="image-badge type-transaction">
+            {{ annonce.typeTransaction === 'LOCATION' ? 'À louer' : 'À vendre' }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="card-body">
+        <h3 class="card-title">{{ annonce.titre }}</h3>
+        <p class="card-description">{{ annonce.description | slice:0:150 }}{{ annonce.description.length > 150 ? '...' : '' }}</p>
+        
+        <div class="card-meta">
+          <div class="meta-item">
+            <i class="bi bi-geo-alt"></i>
+            {{ annonce.gouvernorat }}, {{ annonce.adresse }}
+          </div>
+          <div class="meta-item">
+            <i class="bi bi-cash-stack"></i>
+            {{ annonce.prix | number }} TND
+            <span *ngIf="annonce.typeTransaction === 'LOCATION'">/mois</span>
+          </div>
+          <div class="meta-item-group">
+            <div class="meta-item">
+              <i class="bi bi-house-door"></i>
+              {{ annonce.categorie?.nom }}
+            </div>
+            <div class="meta-item">
+              <i class="bi bi-arrows-fullscreen"></i>
+              {{ annonce.surface }} m²
+            </div>
+            <div class="meta-item" *ngIf="annonce.nombresChambres">
+              <i class="bi bi-door-open"></i>
+              {{ annonce.nombresChambres }} ch.
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-actions">
+          <button class="btn-action btn-edit" (click)="modifierAnnonce(annonce.id!)">
+            <i class="bi bi-pencil"></i> Modifier
+          </button>
+          <button class="btn-action btn-delete" (click)="ouvrirSuppressionModal(annonce)">
+            <i class="bi bi-trash"></i> Supprimer
+          </button>
+          <button class="btn-action btn-details" (click)="voirDetails(annonce.id!)">
+            <i class="bi bi-eye"></i> Détails
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container" *ngIf="annoncesFiltrees.length > itemsPerPage">
+    <div class="pagination-info">
+      Affichage {{ (currentPage - 1) * itemsPerPage + 1 }}-{{ getEndIndex() }} sur {{ annoncesFiltrees.length }}
+    </div>
+    <div class="pagination-controls">
+      <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPage(1)">
+        <i class="bi bi-chevron-double-left"></i>
+      </button>
+      <button class="pagination-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      
+      <div class="page-numbers">
+        <button *ngFor="let page of getPages()" 
+                class="pagination-btn" 
+                [class.active]="page === currentPage"
+                (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      </div>
+      
+      <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+      <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(totalPages)">
+        <i class="bi bi-chevron-double-right"></i>
+      </button>
+    </div>
+    <div class="page-size-selector">
+      <select [(ngModel)]="itemsPerPage" (change)="onPageSizeChange()">
+        <option value="5">5 par page</option>
+        <option value="10">10 par page</option>
+        <option value="20">20 par page</option>
+      </select>
+    </div>
+  </div>
+
+  <ng-template #noAnnonces>
+    <div class="empty-state">
+      <i class="bi bi-house-x"></i>
+      <h3>Aucune annonce trouvée</h3>
+      <p *ngIf="filtreActif === 'toutes' && !searchTerm">Vous n'avez publié aucune annonce pour le moment.</p>
+      <p *ngIf="filtreActif !== 'toutes'">Aucune annonce correspondant à ce filtre.</p>
+      <p *ngIf="searchTerm">Aucune annonce ne correspond à votre recherche.</p>
+      <button class="btn btn-primary" (click)="publierAnnonce()">
+        <i class="bi bi-plus-circle"></i> Publier votre première annonce
+      </button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Modal de suppression -->
+<div class="modal fade" id="suppressionModal" tabindex="-1" aria-labelledby="suppressionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="suppressionModalLabel">Confirmer la suppression</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer l'annonce "{{ selectedAnnonce?.titre }}" ? Cette action est irréversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="supprimerAnnonce()">Confirmer la suppression</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,118 @@
+<app-navbar></app-navbar>
+
+<div class="register-container">
+    <!-- Formulaire d'inscription -->
+    <div class="register-box">
+        <h2 class="text-center">Créer un compte</h2>
+        <p class="text-muted text-center">Inscrivez-vous pour accéder à nos services</p>
+
+            <!-- Sélection du rôle -->
+            <!-- Sélection du rôle -->
+            <div class="mb-3 text-center">
+                <label class="form-label">Vous êtes :</label>
+                <div class="d-flex justify-content-center">
+                    <div class="form-check me-3">
+                        <input type="radio" class="form-check-input" [(ngModel)]="roles[0]" name="role" [value]="'PROPRIETAIRE'" required>
+                        <label class="form-check-label">Propriétaire</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" [(ngModel)]="roles[0]" name="role" [value]="'VISITEUR'" required>
+                        <label class="form-check-label">Visiteur</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Nom et Prénom -->
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control" placeholder="Nom" required [(ngModel)]="nom" name="nom">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control" placeholder="Prénom" required [(ngModel)]="prenom" name="prenom">
+            </div>
+
+            <!-- Région -->
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                <select class="form-select" [(ngModel)]="region" name="region" required>
+                    <option value="" disabled selected>Choisissez votre région</option>
+                    <option *ngFor="let reg of regions" [value]="reg">{{ reg }}</option>
+                </select>
+            </div>
+
+            <!-- Adresse -->
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-house-door"></i></span>
+                <input type="text" class="form-control" placeholder="Adresse" required [(ngModel)]="adresse" name="adresse">
+            </div>
+
+            <!-- Numéro de téléphone -->
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                <input type="tel" class="form-control" placeholder="Numéro de téléphone" required [(ngModel)]="telephone" name="telephone">
+            </div>
+
+            <!-- Email -->
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                <input type="email" class="form-control" placeholder="Adresse e-mail" required [(ngModel)]="email" name="email">
+            </div>
+
+            <!-- Mot de passe -->
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="Mot de passe" required [(ngModel)]="password" name="password">
+                <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
+                    <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+            </div>
+
+            <!-- Confirmer mot de passe -->
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input [type]="showConfirmPassword ? 'text' : 'password'" class="form-control" placeholder="Confirmez le mot de passe" required [(ngModel)]="confirmPassword" name="confirmPassword">
+                <button type="button" class="btn btn-outline-secondary" (click)="toggleConfirmPasswordVisibility()">
+                    <i class="bi" [ngClass]="showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+            </div>
+
+
+            <!-- Bouton d'inscription -->
+            <button class="btn btn-primary w-100" (click)="onRegister()">S'inscrire</button>
+        
+
+        <!-- Lien vers connexion -->
+        <div class="text-center mt-3">
+            <span>Vous avez déjà un compte ?</span> 
+            <a routerLink="/login" class="text-primary fw-bold">Se connecter</a>
+        </div>
+    </div>
+    <div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verificationModalLabel">Vérification de votre code</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="verificationCode" class="form-label">Entrez le code de vérification envoyé à votre email :</label>
+                    <input type="text" class="form-control" id="verificationCode" [(ngModel)]="verificationCode" placeholder="Code de vérification" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary" (click)="onVerifyCode()">Vérifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image à droite -->
+    <div class="register-image d-none d-lg-block">
+        <img src="assets/appart3.jpg"alt="Illustration d'inscription">
+    </div>
+</div>
+<app-why-choose-us></app-why-choose-us>
+<app-footer></app-footer>

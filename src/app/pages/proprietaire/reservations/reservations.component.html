@@ -1,0 +1,134 @@
+<div class="reservations-container">
+  <div class="reservations-header">
+    <h2>Gestion des Réservations</h2>
+    <div class="header-actions">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Rechercher une réservation..." [(ngModel)]="searchTerm" (input)="applyFilters()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtres et Statistiques -->
+  <div class="reservations-controls">
+    <div class="filters-container">
+      <div class="filtres">
+        <button *ngFor="let filtre of filtres" 
+                [class.active]="filtreActif === filtre.value"
+                (click)="changerFiltre(filtre.value)">
+          {{ filtre.label }}
+          <span class="badge">{{ getReservationCount(filtre.value) }}</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="stats-container">
+      <div class="stat-card" *ngFor="let stat of stats">
+        <div class="stat-value">{{ stat.value }}</div>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Liste des Réservations -->
+  <div class="reservations-grid" *ngIf="reservationsFiltrees.length > 0; else noReservations">
+    <div class="reservation-card" *ngFor="let reservation of paginatedReservations">
+      <div class="card-image">
+        <img [src]="reservation.bien?.imageUrls?.[0] || 'assets/default-property.jpg'" 
+             alt="Image du bien" 
+             (error)="handleImageError($event)">
+        <div class="image-badge" [ngClass]="getStatusClass(reservation.statut!)">
+          <i [ngClass]="getStatusIcon(reservation.statut!)"></i>
+          {{ getStatusText(reservation.statut!) }}
+        </div>
+      </div>
+      
+      <div class="card-body">
+        <h3 class="card-title">{{ reservation.bien?.titre }}</h3>
+        
+        <div class="card-meta">
+          <div class="meta-item">
+            <i class="bi bi-calendar"></i>
+            {{ reservation.dateDebut | date:'dd/MM/yyyy' }} - {{ reservation.dateFin | date:'dd/MM/yyyy' }}
+          </div>
+          <div class="meta-item">
+            <i class="bi bi-person"></i>
+            {{ reservation.client?.prenom }} {{ reservation.client?.nom }}
+          </div>
+          <div class="meta-item">
+            <i class="bi bi-currency-euro"></i>
+            {{ reservation.bien?.prix| number:'1.2-2' }} TND
+          </div>
+        </div>
+        
+        <div class="card-actions">
+          <button class="btn-action btn-details" (click)="voirDetails(reservation)">
+            <i class="bi bi-eye"></i> Détails
+          </button>
+          
+          <div class="action-group" *ngIf="reservation.statut === 'EN_ATTENTE'">
+            <button class="btn-action btn-accept" (click)="accepterReservation(reservation.id!)">
+              <i class="bi bi-check-circle"></i>
+            </button>
+            <button class="btn-action btn-reject" (click)="ouvrirRefusModal(reservation)">
+              <i class="bi bi-x-circle"></i>
+            </button>
+          </div>
+          
+          <button *ngIf="['ANNULEE','REFUSEE'].includes(reservation.statut!)" 
+                  class="btn-action btn-delete" 
+                  (click)="supprimerReservation(reservation.id)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container" *ngIf="reservationsFiltrees.length > itemsPerPage">
+    <div class="pagination-info">
+      Affichage {{ (currentPage - 1) * itemsPerPage + 1 }}-{{ getEndIndex() }} sur {{ reservationsFiltrees.length }}
+    </div>
+    <div class="pagination-controls">
+      <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPage(1)">
+        <i class="bi bi-chevron-double-left"></i>
+      </button>
+      <button class="pagination-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      
+      <div class="page-numbers">
+        <button *ngFor="let page of getPages()" 
+                class="pagination-btn" 
+                [class.active]="page === currentPage"
+                (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      </div>
+      
+      <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+      <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(totalPages)">
+        <i class="bi bi-chevron-double-right"></i>
+      </button>
+    </div>
+    <div class="page-size-selector">
+      <select [(ngModel)]="itemsPerPage" (change)="onPageSizeChange()">
+        <option value="5">5 par page</option>
+        <option value="10">10 par page</option>
+        <option value="20">20 par page</option>
+      </select>
+    </div>
+  </div>
+
+  <ng-template #noReservations>
+    <div class="empty-state">
+      <i class="bi bi-calendar-x"></i>
+      <h3>Aucune réservation trouvée</h3>
+      <p *ngIf="filtreActif === 'all'">Vous n'avez aucune réservation pour le moment.</p>
+      <p *ngIf="filtreActif !== 'all'">Aucune réservation avec ce statut.</p>
+    </div>
+  </ng-template>
+</div>

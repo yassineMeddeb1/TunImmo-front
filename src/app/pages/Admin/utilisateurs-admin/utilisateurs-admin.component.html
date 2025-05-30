@@ -1,0 +1,108 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Gestion des Utilisateurs</h2>
+
+  <!-- Filtres -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="input-group">
+        <input type="text" [(ngModel)]="searchQuery" class="form-control" placeholder="Rechercher nom, prénom ou email" (keyup.enter)="applyFilters()">
+        <button class="btn btn-outline-secondary" (click)="applyFilters()">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <select [(ngModel)]="selectedRole" class="form-select" (change)="applyFilters()">
+        <option value="">Tous les rôles</option>
+        <option value="ADMIN">Admin</option>
+        <option value="PROPRIETAIRE">Propriétaire</option>
+        <option value="VISITEUR">Client</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary w-100" (click)="loadUsers()">
+        <i class="bi bi-arrow-clockwise"></i> Actualiser
+      </button>
+    </div>
+  </div>
+
+  <!-- Tableau des utilisateurs -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Photo</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="isLoading">
+          <td colspan="7" class="text-center py-4">
+            <div class="spinner-border text-primary"></div>
+          </td>
+        </tr>
+        <tr *ngFor="let user of users">
+          <td>
+            <img [src]="user.imageUrl" alt="Avatar" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+          </td>
+          <td>{{ user.nom }}</td>
+          <td>{{ user.prenom }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'bg-danger': user.role === 'ADMIN',
+              'bg-warning text-dark': user.role === 'PROPRIETAIRE',
+              'bg-success': user.role === 'VISITEUR'
+            }">{{ user.role | lowercase }}</span>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="user.enabled ? 'bg-success' : 'bg-secondary'">
+              {{ user.enabled ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user.id)">
+                <i class="bi bi-trash"></i>
+              </button>
+              <button class="btn btn-sm" [ngClass]="user.enabled ? 'btn-warning' : 'btn-success'" (click)="toggleStatus(user.id)">
+                <i class="bi" [ngClass]="user.enabled ? 'bi-lock' : 'bi-unlock'"></i>
+              </button>
+              <button *ngIf="user.role === 'VISITEUR'" class="btn btn-sm btn-info" (click)="viewReservations(user.id)">
+                <i class="bi bi-calendar"></i>
+              </button>
+              <button *ngIf="user.role === 'PROPRIETAIRE'" class="btn btn-sm btn-secondary" (click)="viewAnnonces(user.id)">
+                <i class="bi bi-house"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="!isLoading && users.length === 0">
+          <td colspan="7" class="text-center py-4 text-muted">
+            Aucun utilisateur trouvé
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <nav *ngIf="totalItems > itemsPerPage">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" (click)="onPageChange(currentPage - 1)">Précédent</a>
+      </li>
+      <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === currentPage">
+        <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === getLastPage()">
+        <a class="page-link" (click)="onPageChange(currentPage + 1)">Suivant</a>
+      </li>
+    </ul>
+  </nav>
+</div>

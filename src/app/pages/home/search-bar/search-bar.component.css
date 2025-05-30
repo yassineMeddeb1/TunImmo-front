@@ -1,0 +1,99 @@
+/* Styles pour les cartes */
+.property-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  background: #fff;
+  margin: 10px;
+  height: 400px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  position: relative;
+}
+
+.property-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.property-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 15px 15px 0 0;
+  transition: filter 0.3s ease-in-out;
+}
+
+.property-card:hover .property-image {
+  filter: brightness(0.8);
+}
+
+.badges {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  gap: 5px;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.favoris-icon {
+  z-index: 2;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.favoris-icon:hover {
+  transform: scale(1.2);
+}
+
+.reservation-button {
+  position: relative;
+  z-index: 2;
+}
+
+.reservation-button button {
+  transition: all 0.3s ease-in-out;
+}
+
+.reservation-button button:hover {
+  transform: scale(1.05);
+}
+
+.img-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 30%, rgba(0, 0, 0, 0.9));
+  z-index: 1;
+}
+
+.content-overlay {
+  position: relative;
+  z-index: 2;
+}
+
+/* Empêche le stretched-link de couvrir tout */
+.card-body {
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .property-card {
+      margin-bottom: 20px;
+  }
+}

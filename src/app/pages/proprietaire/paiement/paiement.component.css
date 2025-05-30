@@ -1,0 +1,482 @@
+/* Base Styles */
+.paiement-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+}
+
+/* Progress Steps */
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+.progress-line {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #eee;
+  z-index: 1;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  flex: 1;
+}
+
+.step-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #eee;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.step-label {
+  color: #999;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.step.active .step-circle {
+  background: #56b3a8;
+  color: white;
+}
+
+.step.completed .step-circle {
+  background: #0a5236;
+  color: white;
+}
+
+.step.active .step-label,
+.step.completed .step-label {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* Security Banner */
+.security-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f8f9fa;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  color: #56b3a8;
+  font-size: 0.9rem;
+}
+
+.security-banner i {
+  font-size: 1.2rem;
+}
+
+/* Order Summary */
+.order-summary {
+  margin-bottom: 2.5rem;
+}
+
+.order-summary h3 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-card {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 1.5rem;
+  border-left: 3px solid #56b3a8;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  color: #34495e;
+}
+
+.summary-item.total {
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid #eee;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Payment Methods */
+.mode-paiement {
+  margin-bottom: 2rem;
+}
+
+.mode-paiement h3 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.paiement-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.paiement-option {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.paiement-option:hover {
+  border-color: #56b3a8;
+}
+
+.paiement-option.active {
+  border-color: #0a5236;
+  background: #f6fbf9;
+}
+
+.option-icon i {
+  font-size: 1.8rem;
+  color: #56b3a8;
+}
+
+.option-label {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* Payment Form */
+.formulaire-paiement h3 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.paiement-form {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+.iframe-container {
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+iframe {
+  display: block;
+  background: transparent;
+}
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #56b3a8;
+  box-shadow: 0 0 0 2px rgba(86, 179, 168, 0.2);
+  outline: none;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon i {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+  cursor: help;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.help-message {
+  color: #7f8c8d;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.form-submit {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.btn-payer {
+  background: linear-gradient(90deg, #56b3a8 0%, #0a5236 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-payer:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(86, 179, 168, 0.3);
+}
+
+.btn-payer:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+}
+ /* Add these to your existing CSS */
+.stripe-card {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  background: white;
+}
+
+.StripeElement--focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+.secure-info {
+  color: #7f8c8d;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Bank Transfer */
+.virement-instructions h3 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.instructions-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.bank-info {
+  margin-bottom: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-label {
+  font-weight: 500;
+  color: #2c3e50;
+  min-width: 120px;
+}
+
+.info-value {
+  color: #34495e;
+}
+
+.instructions-text {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.instructions-text p {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.instructions-text i {
+  color: #56b3a8;
+  margin-top: 0.2rem;
+}
+
+.instructions-text a {
+  color: #56b3a8;
+  text-decoration: none;
+}
+
+.instructions-text a:hover {
+  text-decoration: underline;
+}
+
+.btn-confirm {
+  background: #0a5236;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-confirm:hover {
+  background: #08412b;
+}
+
+/* Processing Overlay */
+.processing-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.processing-content {
+  text-align: center;
+  max-width: 300px;
+}
+
+.spinner {
+  font-size: 3rem;
+  color: #56b3a8;
+  margin-bottom: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.processing-content h4 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.processing-content p {
+  color: #7f8c8d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .paiement-container {
+    padding: 1.5rem;
+  }
+  
+  .paiement-options {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .step-label {
+    font-size: 0.8rem;
+  }
+  
+  .summary-card,
+  .paiement-form,
+  .instructions-card {
+    padding: 1.25rem;
+  }
+}

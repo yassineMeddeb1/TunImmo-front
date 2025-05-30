@@ -1,0 +1,175 @@
+<app-navbar></app-navbar>
+
+<section class="container-fluid my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card border-0 shadow-sm overflow-hidden hover-scale">
+        <!-- En-tête avec effet de vague -->
+        <div class="card-header bg-teal text-white position-relative">
+          <!-- SVG WAVES -->
+          <div class="wave-divider position-absolute top-0 start-0 w-100 h-100" >
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-100 h-auto">
+              <path opacity=".25" fill="#10B981"
+                d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z">
+              </path>
+              <path opacity=".5" fill="#10B981"
+                d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z">
+              </path>
+              <path fill="#10B981"
+                d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z">
+              </path>
+            </svg>
+          </div>
+        
+          <!-- TEXT ABOVE -->
+          <h2 class="h4 mb-0 text-gray-100 position-relative" style="z-index: 1;">
+            <i class="bi bi-calendar-plus me-2"></i>Réserver ce bien
+          </h2>
+        </div>
+        
+        
+        <div class="card-body p-4">
+          <div *ngIf="!isLoading && bien" class="row">
+            <!-- Détails du bien -->
+            <div class="col-md-6 mb-4 mb-md-0 pe-md-4">
+              <div class="sticky-top" style="top: 20px;">
+                <h3 class="h5 text-teal mb-3">{{ bien.titre }}</h3>
+                <p class="text-gray-600 mb-4">{{ bien.description }}</p>
+                
+                <div class="bg-gray-100 p-4 rounded-lg mb-4 border border-gray-200 shadow-xs">
+                  <h4 class="h6 text-gray-800 mb-3"><i class="bi bi-house-door me-2 text-teal"></i>Détails du bien</h4>
+                  <ul class="list-unstyled mb-0">
+                    <li class="d-flex justify-content-between py-2 border-bottom border-gray-200">
+                      <span class="fw-medium text-gray-600">Type de location:</span>
+                      <span class="badge bg-teal-light rounded-pill px-3">{{ bien.typeLocation }}</span>
+                    </li>
+                    <li class="d-flex justify-content-between py-2 border-bottom border-gray-200">
+                      <span class="fw-medium text-gray-600">Prix:</span>
+                      <span class="text-teal fw-bold">{{ bien.prix }} TND/{{bien.typeLocation}}</span>
+                    </li>
+                    <li class="d-flex justify-content-between py-2">
+                      <span class="fw-medium text-gray-600">Adresse:</span>
+                      <span class="text-gray-700 text-end">{{ bien.adresse }}</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div class="alert bg-teal-lighter border border-teal-light text-teal-dark rounded-lg d-flex align-items-center">
+                  <i class="bi bi-info-circle-fill me-3 fs-5 text-teal"></i>
+                  <div>Les dates en <span class="text-danger fw-bold">rouge</span> indiquent des périodes déjà réservées.</div>
+                </div>
+
+                <!-- Calendrier des indisponibilités -->
+                <div class="mt-4 bg-white p-3 rounded-lg border border-gray-200 shadow-xs">
+                  <h5 class="h6 text-gray-800 mb-3"><i class="bi bi-calendar-x me-2 text-teal"></i>Périodes réservées</h5>
+                  <div *ngIf="indisponibilites.length > 0; else noReservations">
+                    <div *ngFor="let periode of indisponibilites" class="mb-2">
+                      <span class="badge bg-danger-light text-danger rounded-pill px-3 py-1">
+                        {{ periode.dateDebut | date:'shortDate' }} - {{ periode.dateFin | date:'shortDate' }}
+                      </span>
+                    </div>
+                  </div>
+                  <ng-template #noReservations>
+                    <p class="text-muted mb-0">Aucune réservation pour le moment</p>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+
+            <!-- Formulaire de réservation -->
+            <div class="col-md-6 ps-md-4">
+              <div class="border border-gray-200 p-4 rounded-lg shadow-xs">
+                <h4 class="h5 text-gray-800 mb-4"><i class="bi bi-calendar-range me-2 text-teal"></i>Choisissez vos dates</h4>
+                
+                <!-- DatePickers -->
+                <div class="mb-4">
+                  <label class="form-label text-gray-700 fw-medium d-flex align-items-center">
+                    <i class="bi bi-calendar-event me-2 text-teal"></i>
+                    {{ bien.typeLocation === 'par_nuit' ? 'Date d\'arrivée' : 'Date de début' }}
+                  </label>
+                  <dp-date-picker
+                    [(ngModel)]="dateDebut"
+                    [config]="datePickerConfig"
+                    [disabledDates]="isDateDisabled"
+                    (onChange)="checkDateConflict()"
+                    placeholder="Sélectionnez une date"
+                    theme="dp-material"
+                    class="form-control date-picker-custom">
+                  </dp-date-picker>
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label text-gray-700 fw-medium d-flex align-items-center">
+                    <i class="bi bi-calendar-x me-2 text-teal"></i>
+                    {{ bien.typeLocation === 'par_nuit' ? 'Date de départ' : 'Date de fin' }}
+                  </label>
+                  <dp-date-picker
+                    [(ngModel)]="dateFin"
+                    [config]="datePickerConfig"
+                    [disabledDates]="isDateDisabled"
+                    (onChange)="checkDateConflict()"
+                    placeholder="Sélectionnez une date"
+                    theme="dp-material"
+                    class="form-control date-picker-custom">
+                  </dp-date-picker>
+                </div>
+
+                <!-- Alert pour conflit de dates -->
+                <div *ngIf="dateConflict" class="alert alert-danger d-flex align-items-center">
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                  <div>Les dates sélectionnées incluent une période déjà réservée.</div>
+                </div>
+
+                <button 
+                  class="btn btn-teal w-100 py-3 fw-bold mt-2 d-flex align-items-center justify-content-center"
+                  (click)="reserver()"
+                  [disabled]="dateConflict || !dateDebut || !dateFin">
+                  <i class="bi bi-check-circle-fill me-2 fs-5"></i> Confirmer la réservation
+                </button>
+                
+                <div class="mt-3 text-center">
+                  <small class="text-gray-500">En confirmant, vous acceptez nos <a href="#" class="text-teal">conditions générales</a></small>
+                </div>
+              </div>
+              
+              <!-- Résumé des dates sélectionnées -->
+              <div *ngIf="dateDebut && dateFin" class="mt-4 p-4 bg-teal-lighter rounded-lg border border-teal-light shadow-xs">
+                <h5 class="h6 text-gray-800 mb-3 d-flex align-items-center">
+                  <i class="bi bi-card-checklist me-2 text-teal"></i>Résumé de votre sélection
+                </h5>
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <p class="mb-1 fw-medium text-gray-600">{{ bien.typeLocation === 'par_nuit' ? 'Arrivée:' : 'Début:' }}</p>
+                    <p class="text-teal fw-bold fs-5">{{ dateDebut | date:'mediumDate' }}</p>
+                  </div>
+                  <div class="text-end">
+                    <p class="mb-1 fw-medium text-gray-600">{{ bien.typeLocation === 'par_nuit' ? 'Départ:' : 'Fin:' }}</p>
+                    <p class="text-teal fw-bold fs-5">{{ dateFin | date:'mediumDate' }}</p>
+                  </div>
+                </div>
+                <div class="mt-3 pt-3 border-top border-teal-light">
+                  <p class="mb-1 fw-medium text-gray-600">Durée totale:</p>
+                  <p class="text-teal fw-bold fs-5">{{ calculateDuration() }} {{ bien.typeLocation === 'par_nuit' ? 'nuit(s)' : 'mois' }}</p>
+                </div>
+                <div class="mt-3 pt-3 border-top border-teal-light">
+                  <p class="mb-1 fw-medium text-gray-600">Prix total:</p>
+                  <p class="text-teal fw-bold fs-5">{{ calculateTotalPrice() }} TND</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Loading state -->
+          <div *ngIf="isLoading" class="text-center py-5">
+            <div class="spinner-grow text-teal" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-4 text-gray-600 fs-5">Chargement des détails du bien...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

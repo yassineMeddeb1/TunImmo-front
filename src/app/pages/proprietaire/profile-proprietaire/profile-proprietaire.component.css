@@ -1,0 +1,118 @@
+.profile-main {
+    flex: 1;
+    padding: 20px;
+    background: #e5fffc;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .profile-main:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .profile-main h4 {
+    color: #212121;
+    font-size: 1.8rem;
+    font-weight: 500;
+    
+      }
+  
+  
+  .profile-form {
+    background: rgba(255, 255, 255, 0.493);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .profile-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .input-group-inside {
+    position: relative;
+  }
+  
+  .input-group-inside .input-group-text {
+    background: transparent;
+    border: none;
+    background-color: #00796b;
+  }
+  
+  .input-group-inside .form-control {
+    padding-left: 40px;
+    border-radius: 10px;
+    height: 45px;
+    font-size: 14px;
+    border: 1px solid #1d6d21;
+  }
+  
+  .input-group-inside .form-control:focus {
+    border-color: #00796b;
+    box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
+  }
+  
+  .btn-primary {
+    background-color: #00796b;
+    border: none;
+    font-size: 16px;
+    padding: 12px 30px;
+    border-radius: 10px;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #005a4f;
+  }
+  .profile-pic {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+  }
+  
+  .profile-pic img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid #00796b;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .profile-pic:hover img {
+    transform: scale(1.05);
+  }
+  
+  .edit-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: white;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+  }
+  
+  .edit-icon:hover {
+    background: #f1f1f1;
+  }
+  

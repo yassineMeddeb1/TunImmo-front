@@ -1,0 +1,40 @@
+<section class="container-fluid  pb-2">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h4 class="h3 mb-2 ms-5">Rechercher un bien par ville</h4>
+    <a class="btn btn-outline-primary fw-semibold ms-md-3" routerLink="/catalog/rent">
+      Voir tout <i class="fi-arrow-long-right ms-2"></i>
+    </a>
+  </div>
+
+  <ngx-slick-carousel [config]="config" class="carousel slickSwiper">
+    <div *ngFor="let data of cityData" ngxSlickItem>
+      <div class="property-card">
+        <div class="card shadow border-0 overflow-hidden" (click)="selectCity(data)">
+          <div class="card-img-top position-relative">
+            <img [src]="data.image" [alt]="data.title" class="img-fluid">
+            <div class="overlay d-flex flex-column justify-content-center align-items-center">
+              <h4 class="fs-xs text-light mb-2">
+                <i class="fi-wallet me-2"></i> Biens à vendre
+              </h4>
+              <div class="progress-container">
+                <div class="progress-bar bg-danger" [style.width.%]="data.sale_progressbar"></div>
+                <span class="text-light ms-2">{{ data.sale_count }}</span>
+              </div>
+
+              <h4 class="fs-xs text-light mt-3">
+                <i class="fi-home me-2"></i> Biens à louer
+              </h4>
+              <div class="progress-container">
+                <div class="progress-bar bg-success" [style.width.%]="data.rent_progressbar"></div>
+                <span class="text-light ms-2">{{ data.rent_count }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h6 class="mb-0 fs-base text-primary fw-bold">{{ data.title }}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ngx-slick-carousel>
+</section>
