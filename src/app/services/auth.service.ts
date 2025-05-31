@@ -20,15 +20,12 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
-
   verifyCode(email: string, code: string): Observable<string> {
-    const params = new HttpParams()
-      .set('email', email)
-      .set('code', code);
-
-    return this.http.post<string>(`${this.apiUrl}/verify-code`, params, { responseType: 'text' as 'json' });
+    return this.http.get<string>(`${this.apiUrl}/verify-code`, {
+      params: new HttpParams().set('email', email).set('code', code),
+      responseType: 'text' as 'json'
+    });
   }
-
   getToken(): string | null {
     return this.getCookie('token');  // Récupérer le token depuis le cookie
   }
