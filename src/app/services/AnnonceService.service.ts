@@ -12,7 +12,7 @@ import { environment } from '../../environements/environment';
 })
 export class AnnonceService {
   private apiUrl = environment.apiUrl;
-  private apiURLCat = `${environment.apiUrl}/categories`;
+  private apiURLCat = `${environment.apiUrlCat}/categories`;
   private apiUrlAdmin = `${environment.apiUrl}/admin/annonces`;
   
   constructor(private http: HttpClient,private authService: AuthService) {}
