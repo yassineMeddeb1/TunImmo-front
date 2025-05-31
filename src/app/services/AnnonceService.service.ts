@@ -5,14 +5,15 @@ import { BienImmobilier } from '../models/BienImmobilier';
 import { CategorieWrapper } from '../models/CategorieWrapper';
 import { AuthService } from './auth.service';
 import { PageResponse } from '../models/page-response';
+import { environment } from '../../environements/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnnonceService {
-  private apiUrl = "http://localhost:9091/api";
-  private apiURLCat = "http://localhost:9091/categories";
-  private apiUrlAdmin = 'http://localhost:9091/api/admin/annonces';
+  private apiUrl = environment.apiUrl;
+  private apiURLCat = `${environment.apiUrl}/categories`;
+  private apiUrlAdmin = `${environment.apiUrl}/admin/annonces`;
   
   constructor(private http: HttpClient,private authService: AuthService) {}
 

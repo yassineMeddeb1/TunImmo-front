@@ -1,11 +1,10 @@
-
-
-  import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, merge, of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
 import { NotificationDTO, NotificationPage } from '../models/NotificationDTO';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { environment } from '../../environements/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +13,8 @@ export class NotificationService implements OnDestroy {
   private socket: WebSocket | null = null;
   private notificationSubject = new Subject<NotificationDTO>();
   private connectionStatus = new BehaviorSubject<boolean>(false);
-  private readonly WS_URL = 'ws://localhost:9091/ws/notifications';
-  private readonly API_URL = 'http://localhost:9091/api/notifications';
+  private readonly WS_URL = environment.apiUrl.replace('http', 'ws').replace('https', 'wss') + '/ws/notifications';
+  private readonly API_URL = `${environment.apiUrl}/notifications`;
   private reconnectAttempts = 0;
   private maxReconnectAttempts = 5;
   private reconnectInterval = 5000;

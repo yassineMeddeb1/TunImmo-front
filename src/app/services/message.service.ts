@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { environment } from '../../environements/environment';
 
 import { BehaviorSubject, Observable, Subject, of, throwError } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
@@ -12,8 +13,8 @@ import { ContactDTO } from '../models/ContactDTO';
   providedIn: 'root'
 })
 export class MessageService implements OnDestroy {
-  private apiUrl = 'http://localhost:9091/api/messages';
-  private wsUrl = 'ws://localhost:9091/ws/messages';
+  private apiUrl = `${environment.apiUrl}/messages`;
+  private wsUrl = environment.apiUrl.replace('http', 'ws').replace('https', 'wss') + '/ws/messages';
   private socket$: WebSocketSubject<any> | null = null;
   private messageSubject = new Subject<MessageDTO>();
   private connectionStatus = new BehaviorSubject<boolean>(false);

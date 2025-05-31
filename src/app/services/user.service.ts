@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Utilisateur } from '../models/Utilisateur';
+import { environment } from '../../environements/environment';
 
 export interface PaginatedUsers {
   content: Utilisateur[];
@@ -14,8 +15,8 @@ export interface PaginatedUsers {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:9091/api/profil';
-  private apiUrlUser = 'http://localhost:9091/api/admin/users';
+  private apiUrl = `${environment.apiUrl}/profil`;
+  private apiUrlUser = `${environment.apiUrl}/admin/users`;
 
   constructor(private http: HttpClient) {}
 

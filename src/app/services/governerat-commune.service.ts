@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Gouvernorat } from '../models/Gouvernorat';
 import { Commune } from '../models/Commune';
+import { environment } from '../../environements/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoverneratCommuneService {
-  private apiUrl = 'http://localhost:9091/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
   private selectedCity = new BehaviorSubject<{name: string, id: number} | null>(null);

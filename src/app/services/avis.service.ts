@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Avis } from '../models/Avis';
 import { AvisRequestDTO } from '../models/AvisRequestDTO';
+import { environment } from '../../environements/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AvisService {
-  private apiUrl = "http://localhost:9091/api/avis";
+  private apiUrl = `${environment.apiUrl}/avis`;
 
   constructor(private http: HttpClient) {}
 

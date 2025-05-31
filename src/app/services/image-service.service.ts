@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import{Image} from '../models/Image';
+import { Image } from '../models/Image';
+import { environment } from '../../environements/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ImageService {
 
-  private apiURLImg= "http://localhost:9091/api/images";
+  private apiURLImg = `${environment.apiUrl}/images`;
   constructor(private http: HttpClient) {}   
   
   uploadImage(file: File, filename: string): Observable<Image>{
