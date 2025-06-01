@@ -57,11 +57,14 @@ export class AnnonceService {
   }
 
   ajouterAnnonce(bien: BienImmobilier): Observable<BienImmobilier> {
-    // Utilisation de AuthService pour obtenir les en-têtes avec le token
     const headers = this.authService.getAuthHeaders();
-    
-    return this.http.post<BienImmobilier>(`${this.apiUrl}/proprietaire`, bien, { headers, withCredentials: true });
-  }
+    console.log('Headers:', headers);
+    console.log('Token:', this.authService.getToken());
+    return this.http.post<BienImmobilier>(`${this.apiUrl}/proprietaire`, bien, { 
+        headers, 
+        withCredentials: true 
+    });
+}
 
   getTopOffers(): Observable<BienImmobilier[]> {
     return this.http.get<BienImmobilier[]>(`${this.apiUrl}/biens/user/top-offers`);
